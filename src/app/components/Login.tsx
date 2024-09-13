@@ -19,10 +19,23 @@ export default function Login() {
         })
         .then(response => {
             if (response.data.token) {
-                const user = { token: response.data.token, username };
                 localStorage.setItem('authToken', response.data.token);
-                setLoggedInUser(user);
-                setError(null);
+                // Start of getting user data
+                axios.get(`https://fakestoreapi.com/users`)
+                    .then(response => {
+                        const user = response.data.find((data: any) => data.username === username);
+                        console.log(user);
+                        if (user) {
+                            setLoggedInUser({ id: user.id, username: user.username, token: localStorage.getItem('authToken') }); // update loggedinuser data (id, username, token)
+                        } else {
+                            setError('User not found');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching user details:', error);
+                        setError('Error fetching user details');
+                    });
+                // End of getting user data
             } else {
                 setError("Invalid username or password");
             }
@@ -31,7 +44,7 @@ export default function Login() {
             console.error(error);
             setError('An error occurred while trying to log in');
         });
-    }
+    };
 
     return (
         <Dialog>

@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { toast } from "sonner"
+import Link from 'next/link';
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -49,6 +50,10 @@ export default function ProductsPage() {
             .catch(error => {
                 console.error(error);
             });
+    }
+
+    const handleViewSingleProduct = () => {
+        // Router.push(`/products/1`);
     }
 
     // Get all categories
@@ -127,7 +132,9 @@ export default function ProductsPage() {
                             <ul>
                                 {productsData.map((product) => (
                                     <li key={product.id}>
-                                        {product.title}
+                                        <Link href={`/products/${product.id}`}>
+                                            {product.title}
+                                        </Link>
                                         <Button onClick={() => handleAddToCartClick(product.id)}>Add to Cart</Button>
                                     </li>
                                 ))}

@@ -2,16 +2,19 @@
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 import { UserContext } from '../contexts/UserContext';
+import QuantityCounter from '../components/QuantityCounter';
+import Header from '../components/Header';
 
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);
     const [productData, setProductData] = useState<any[]>([]);
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-
+    
     // Get all products in cart based on User ID
     useEffect(() => {
         const fetchCardData = () => {
-            axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
+            // axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
+            axios.get(`https://fakestoreapi.com/carts/1`)
                 .then(response => {
                     setCartData(response.data);
                     const products = response.data.products;
@@ -28,6 +31,7 @@ export default function ProductsPage() {
                     Promise.all(productDetailsPromise)
                         .then(productData => {
                             setProductData(productData);
+                            console.log(productData);
                         })
                         .catch(error => {
                             console.error(error);
@@ -44,10 +48,18 @@ export default function ProductsPage() {
 
     return (
         <main>
+            <Header />
             {productData ? (
                 <ul>
                     {productData.map((product) => (
-                        <li key={product.id}>{product.title}</li>
+                        <li key={product.id}>{product.title}
+                            <QuantityCounter 
+                                userId={1}
+                                quantity={product.quantity}
+                                productId={product.id}
+                                // userId={loggedInUser.id}
+                            />
+                        </li>
                     ))}
                 </ul>
             ) : (

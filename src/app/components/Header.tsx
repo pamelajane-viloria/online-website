@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const Header = () => {
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
-
+    
     return (
         <header className="bg-zinc-300">
             <h1>My Global Header</h1>
