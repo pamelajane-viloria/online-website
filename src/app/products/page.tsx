@@ -52,10 +52,6 @@ export default function ProductsPage() {
             });
     }
 
-    const handleViewSingleProduct = () => {
-        // Router.push(`/products/1`);
-    }
-
     // Get all categories
     useEffect(() => {
         const fetchCategoriesData = () => {
