@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { toast } from "sonner"
 import Link from 'next/link';
+import Image from "next/image";
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -15,7 +16,7 @@ export default function ProductsPage() {
     const [sort, setSort] = useState<boolean>(false);
     const [selectedCategory, setSelectedCategory] = useState<any>(null);
     const [cartItem, setCartItem] = useState<any[]>([]);
-    // const { toast } = useToast();
+    const orig = 'http://localhost:3000'
 
     // Get all products, default render
     useEffect(() => {
@@ -130,6 +131,7 @@ export default function ProductsPage() {
                                     <li key={product.id}>
                                         <Link href={`/products/${product.id}`}>
                                             {product.title}
+                                            {/* <img src={product.image} /> */}
                                         </Link>
                                         <Button onClick={() => handleAddToCartClick(product.id)}>Add to Cart</Button>
                                     </li>

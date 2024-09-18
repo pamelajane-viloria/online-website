@@ -40,7 +40,7 @@ const Header = () => {
     return (
         <div>
             <header className="bg-yellow-400 hidden md:block">
-                <div className="flex justify-between px-10">
+                <div className="flex justify-between px-24">
                     <ul className="flex flex-row items-center gap-3">
                         <li>
                             <Select defaultValue="EN">
@@ -78,7 +78,7 @@ const Header = () => {
                     </ul>
                 </div>
             </header>
-            <nav className="flex flex-row justify-between items-center px-10 py-3 relative">
+            <nav className="flex flex-row justify-between items-center px-24 py-3 relative">
                 <h1 className="inline text-xl font-bold">Jennie & CO</h1>
                 <NavigationMenu className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <NavigationMenuList>
@@ -160,7 +160,7 @@ const Header = () => {
                                 className="z-10"
                             />
                             {search && (
-                                <div id="dropdown" className="absolute mt-1 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700">
+                                <div id="dropdown" className="absolute mt-1 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 z-[100]">
                                     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
                                         {productsData.filter((row) => {
                                             if(row.title.toLowerCase().includes(search)) {
@@ -193,7 +193,6 @@ const Header = () => {
                     <li><Login /></li>
                 </ul>
             </nav>
-
         </div>
     );
 };
