@@ -90,7 +90,7 @@ const Header = () => {
                             </Link>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger>Shop</NavigationMenuTrigger>
+                            <NavigationMenuTrigger className="bg-transparent">Shop</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <ul className="grid grid-rows-4 grid-flow-col gap-1 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                                     <li>
@@ -116,7 +116,7 @@ const Header = () => {
                             </NavigationMenuContent>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger>Product</NavigationMenuTrigger>
+                            <NavigationMenuTrigger className="bg-transparent">Product</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                     <li>
@@ -130,7 +130,7 @@ const Header = () => {
                             </NavigationMenuContent>
                         </NavigationMenuItem>
                         <NavigationMenuItem>
-                            <NavigationMenuTrigger>Pages</NavigationMenuTrigger>
+                            <NavigationMenuTrigger className="bg-transparent">Pages</NavigationMenuTrigger>
                             <NavigationMenuContent>
                                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                                     <li>

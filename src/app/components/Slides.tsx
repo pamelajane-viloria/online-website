@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import "../styles/slides.css";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
@@ -17,35 +18,37 @@ export default function Slide() {
     ];
     
 	return (
-        <Swiper
-            pagination={true} 
-            modules={[Autoplay, Pagination]} 
-            autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-            }}
-            onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
-            className="relative"
-        >
-            {pictures.map((picture) => (
-                <SwiperSlide key={picture.id}>
-                    <img src={picture.url} />
-                    <motion.div
-                        key={currentSlide}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1, ease: 'easeInOut' }}
-                    >
-                        <div className="absolute top-1/2 transform -translate-y-1/2 w-2/5 text-left px-24">
-                            <h2 className="font-bold text-4xl mb-3">{picture.title}</h2>
-                            <p className="italic font-light mb-5">{picture.subtitle}</p>
-                            <Button variant="outline" className="bg-transparent rounded-sm border-zinc-900 hover:bg-zinc-900 hover:text-zinc-50 shadow-none">
-                                <Link href="/">Shop now!</Link>
-                            </Button>
-                        </div>
-                    </motion.div>
-                </SwiperSlide>
-            ))}
-        </Swiper>
+        <section className="swiper-container">
+            <Swiper
+                pagination={true} 
+                modules={[Autoplay, Pagination]} 
+                autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                }}
+                onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}
+                className="relative rounded-2xl"
+            >
+                {pictures.map((picture) => (
+                    <SwiperSlide key={picture.id}>
+                        <img src={picture.url} />
+                        <motion.div
+                            key={currentSlide}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 1, ease: 'easeInOut' }}
+                        >
+                            <div className="absolute top-1/2 transform -translate-y-1/2 w-2/5 text-left px-24">
+                                <h2 className="font-bold text-4xl mb-3">{picture.title}</h2>
+                                <p className="italic font-light mb-5">{picture.subtitle}</p>
+                                <Button variant="outline" className="bg-transparent rounded-sm border-zinc-900 hover:bg-zinc-900 hover:text-zinc-50 shadow-none">
+                                    <Link href="/">Shop now!</Link>
+                                </Button>
+                            </div>
+                        </motion.div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+        </section>
 	);
 }

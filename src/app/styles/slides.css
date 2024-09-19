@@ -1,0 +1,28 @@
+.swiper-container {
+    padding: 0 6rem;
+    margin-top: 1rem;
+}
+
+    .swiper-container .swiper {
+        width: 100%;
+        height: 70vh;
+        z-index: 1;
+    }
+  
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+            .swiper-slide img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center bottom;
+                opacity: 0.9;
+            }
