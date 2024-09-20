@@ -1,6 +1,5 @@
 "use client"
-import { createContext, useContext, useState } from 'react';
-import { ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 export const UserContext = createContext<any>(null);
 

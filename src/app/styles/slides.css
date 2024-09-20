@@ -1,4 +1,4 @@
-.swiper-container {
+.swiper-container, .featured-products-container {
     padding: 0 6rem;
     margin-top: 1rem;
 }
@@ -26,3 +26,12 @@
                 object-position: center bottom;
                 opacity: 0.9;
             }
+
+.featured-products-container .swiper-slide {
+    background-color: transparent;
+}
+
+    .featured-products-container .swiper-slide img {
+        object-fit: contain;
+        object-position: center;
+    }

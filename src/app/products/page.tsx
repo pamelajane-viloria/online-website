@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
 import Loading from './loading';
 import Header from '../components/Header';
@@ -8,13 +8,15 @@ import { useToast } from "@/components/hooks/use-toast";
 import { toast } from "sonner"
 import Link from 'next/link';
 import Image from "next/image";
+import { CategoryContext } from '../contexts/CategoryContext';
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [productsData, setProductsData] = useState<any[]>([]);
     const [categoriesData, setCategoriesData] = useState<any[]>([]);
     const [sort, setSort] = useState<boolean>(false);
-    const [selectedCategory, setSelectedCategory] = useState<any>(null);
+    const { selectedCategory } = useContext(CategoryContext);
+    const [setSelectedCategory] = useState<any>(null);
     const [cartItem, setCartItem] = useState<any[]>([]);
     const orig = 'http://localhost:3000'
 
@@ -22,7 +24,17 @@ export default function ProductsPage() {
     useEffect(() => {
         const fetchProductData = () => {
             setIsLoading(true);
-            axios.get('https://fakestoreapi.com/products')
+            if(selectedCategory) {
+                axios.get(`https://fakestoreapi.com/products/category/${selectedCategory}`)
+                .then(response => {
+                    setProductsData(response.data);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            } else {
+                axios.get('https://fakestoreapi.com/products')
                 .then(response => {
                     const products = response.data;
                     setProductsData(products);
@@ -32,9 +44,10 @@ export default function ProductsPage() {
                     console.error(error);
                     setIsLoading(false);
                 });
+            }
         };
         fetchProductData();
-    }, []);
+    }, [selectedCategory]);
 
     // Handler for sorted products
     const handleSortClick = (order:string) => {
