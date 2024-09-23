@@ -1,7 +1,7 @@
 "use client"
 import React, { useContext, useState, useEffect } from 'react';
 import Login from './Login';
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '@/app/contexts/UserContext';
 import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select"
 import { NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport, } from "@/components/ui/navigation-menu"

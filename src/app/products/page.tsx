@@ -1,14 +1,15 @@
 'use client'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
-import Loading from './loading';
-import Header from '../components/Header';
+import Loading from '@/app/components/Loading';
+import Header from '@/app/components/Header';
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/hooks/use-toast";
 import { toast } from "sonner"
 import Link from 'next/link';
 import Image from "next/image";
-import { CategoryContext } from '../contexts/CategoryContext';
+import { CategoryContext } from '@/app/contexts/CategoryContext';
+import ProductCard from '@/app/components/ProductCard';
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -51,15 +52,16 @@ export default function ProductsPage() {
 
     // Handler for sorted products
     const handleSortClick = (order:string) => {
+        setIsLoading(true);
         if (order === 'desc') {
             setSort(true);
         } else {
             setSort(false);
         }
-
         axios.get(`https://fakestoreapi.com/products?sort=${order}`)
             .then(response => {
                 setProductsData(response.data);
+                setIsLoading(false);
             })
             .catch(error => {
                 console.error(error);
@@ -83,15 +85,24 @@ export default function ProductsPage() {
     
     // Handler for selected category
     const handleCategoryClick = (category:string) => {
-        axios.get(`https://fakestoreapi.com/products/category/${category}`)
+        let url = "";
+        if(category === "all") {
+            url = 'https://fakestoreapi.com/products';
+        } else {
+            url = `https://fakestoreapi.com/products/category/${category}`;
+        }
+        setIsLoading(true);
+        axios.get(url)
         .then(response => {
             setProductsData(response.data);
+            setIsLoading(false);
         })
         .catch(error => {
             console.error(error);
         });
     };
 
+    // Handle for add to cart on click
     const handleAddToCartClick = (productId:number) => {
         axios.post('https://fakestoreapi.com/carts',{
             userId:5,
@@ -118,35 +129,69 @@ export default function ProductsPage() {
     return (
         <div>
             <Header />
-            <main>
-                <h1>Shop</h1>
+            <section className="heading-section px-24 z-1 mt-4">
+                <div className="bg-zinc-900 w-full h-[70vh] rounded-xl">
+                    <img className="block w-full h-full object-cover object-center opacity-90 rounded-xl" src="/header1.jpeg" />
+                </div>
+            </section>
+            <section className="products-section px-24 my-16">
+                <h2 className="text-3xl font-bold">Products</h2>
                 {isLoading ? (
                     <Loading />
                 ): (
                     <>
-                        <h2>Categories</h2>
                         {categoriesData ? (
-                            <ul>
-                                {categoriesData.map((category) => (
-                                    <li key={category}>
-                                        <button onClick={() => handleCategoryClick(category)}>{category}</button>
+                            <div className="flex justify-between">
+                                <ul className="flex gap-2 my-4">
+                                    <li>
+                                        <Button 
+                                            variant="secondary" 
+                                            className="bg-zinc-200 hover:bg-yellow-100 rounded-full shadow-none"
+                                            onClick={() => handleCategoryClick("all")} 
+                                        >
+                                            All
+                                        </Button>
                                     </li>
-                                ))}
-                            </ul>
+                                    {categoriesData.map((category) => (
+                                        <li key={category}>
+                                            <Button 
+                                                variant="secondary" 
+                                                className="bg-zinc-200 hover:bg-yellow-100 rounded-full shadow-none"
+                                                onClick={() => handleCategoryClick(category)} 
+                                            >
+                                                {category}
+                                            </Button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <Button 
+                                    variant="outline"
+                                    className="rounded-full shadow-none bg-transparent hover:bg-yellow-100"
+                                    onClick={() => handleSortClick(sort ? 'asc' : 'desc')}
+                                >
+                                    Sort {sort ? '↓' : '↑'}
+                                </Button>
+                            </div>
                         ) : (
                             <p>No category data</p>
                         )}
-                        <h2>Products</h2>
-                        <button onClick={() => handleSortClick(sort ? 'asc' : 'desc')}>Sort {sort ? '↓' : '↑'}</button>
+                        
                         {productsData ? (
-                            <ul>
+                            <ul className="grid grid-cols-4 gap-5">
                                 {productsData.map((product) => (
                                     <li key={product.id}>
                                         <Link href={`/products/${product.id}`}>
-                                            {product.title}
-                                            {/* <img src={product.image} /> */}
+                                            <ProductCard 
+                                                productId={product.id}
+                                                title={product.title}
+                                                price={product.price}
+                                                description={product.description}
+                                                image={product.image}
+                                                rate={product.rating.rate}
+                                                count={product.rating.count}
+                                                onAddToCart={handleAddToCartClick}
+                                            />
                                         </Link>
-                                        <Button onClick={() => handleAddToCartClick(product.id)}>Add to Cart</Button>
                                     </li>
                                 ))}
                             </ul>
@@ -155,7 +200,7 @@ export default function ProductsPage() {
                         )}
                     </>
                 )}
-            </main>
+            </section>
         </div>
     );
 }

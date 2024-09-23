@@ -1,10 +1,10 @@
 'use client'
-import Header from "./components/Header";
+import Header from "@/app/components/Header";
 import React, { useContext, useState, useEffect } from 'react';
-import Slides from './components/Slides';
+import Slides from '@/app/components/Slides';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { CategoryContext } from "./contexts/CategoryContext";
+import { CategoryContext } from "@/app/contexts/CategoryContext";
 import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './styles/slides.css';
@@ -12,7 +12,7 @@ import 'swiper/css';
 import { Navigation } from 'swiper/modules';
 import { Button, buttonVariants } from "@/components/ui/button";
 import { toast } from "sonner"
-import Rating from "./components/Rating";
+import Rating from "@/app/components/Rating";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input"
 
@@ -136,9 +136,10 @@ export default function Home() {
 							</svg>
 						</Button>
 						<Button className="swiper-button image-swiper-button-next bg-transparent px-2 shadow-none rounded-none rounded-r-lg border-2" variant={"outline"}>
-						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
 								<path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-							</svg>						</Button>
+							</svg>						
+						</Button>
 					</div>
 				</div>
 				<Swiper

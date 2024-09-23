@@ -1,9 +1,9 @@
 'use client'
 import { useState, useEffect, useContext } from 'react'
 import axios from 'axios';
-import { UserContext } from '../contexts/UserContext';
-import QuantityCounter from '../components/QuantityCounter';
-import Header from '../components/Header';
+import { UserContext } from '@/app/contexts/UserContext';
+import QuantityCounter from '@/app/components/QuantityCounter';
+import Header from '@/app/components/Header';
 
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);

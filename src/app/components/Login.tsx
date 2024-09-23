@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { UserContext } from '../contexts/UserContext';
+import { UserContext } from '@/app/contexts/UserContext';
 
 export default function Login() {
     const [username, setUsername] = useState<any>('');
