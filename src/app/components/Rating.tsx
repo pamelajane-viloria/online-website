@@ -9,7 +9,7 @@ const Rating: FC<ratingProps> = ({ rate }: ratingProps) => {
     return (
        <div className="inline">
             {[1,2,3,4,5].map((star) => (
-                <img src={star <= rate ? "/star-full.svg" : "/star-blank.svg"} className="size-4 inline me-1"/>
+                <img key={star} src={star <= rate ? "/star-full.svg" : "/star-blank.svg"} className="size-4 inline me-1"/>
             ))}
        </div> 
     );
