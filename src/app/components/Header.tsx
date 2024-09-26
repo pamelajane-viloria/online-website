@@ -82,66 +82,20 @@ const Header = () => {
                 <h1 className="inline text-xl font-bold">Jennie & CO</h1>
                 <NavigationMenu className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                     <NavigationMenuList>
-                        <NavigationMenuItem>
+                        <NavigationMenuItem className="hover:bg-zinc-200 rounded-md w-max py-2 px-3">
                             <Link href="/" legacyBehavior passHref>
-                                <NavigationMenuLink className="text-sm font-medium">
-                                    <Button variant="ghost">Home</Button>
-                                </NavigationMenuLink>
+                                <NavigationMenuLink className="font-medium text-sm">Home</NavigationMenuLink>
                             </Link>
                         </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger className="bg-transparent">Shop</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <ul className="grid grid-rows-4 grid-flow-col gap-1 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                                    <li>
-                                        <span className="text-sm font-bold ">Second Best</span>
-                                    </li>
-                                    <li>
-                                        <NavigationMenuLink asChild>
-                                            <Link href="#" className="block rounded-md transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                                                <span className="text-xs">Second Best</span>
-                                            </Link>  
-                                        </NavigationMenuLink>
-                                    </li>
-                                    <li className="row-span-3">
-                                        <NavigationMenuLink asChild>
-                                            <span className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
-                                                <div className="mb-2 mt-4 text-lg font-medium">
-                                                    Sales & Special Offer
-                                                </div>
-                                            </span>
-                                        </NavigationMenuLink>  
-                                    </li>
-                                </ul>   
-                            </NavigationMenuContent>
+                        <NavigationMenuItem className="hover:bg-zinc-200 rounded-md w-max py-2 px-3">
+                            <Link href="/products" legacyBehavior passHref>
+                                <NavigationMenuLink className="font-medium text-sm px-3">Shop</NavigationMenuLink>
+                            </Link>
                         </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger className="bg-transparent">Product</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                    <li>
-                                        <NavigationMenuLink>
-                                            <Link href="#" className="block text-sm font-medium ">
-                                                Second best
-                                            </Link>  
-                                        </NavigationMenuLink>  
-                                    </li>
-                                </ul>   
-                            </NavigationMenuContent>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem>
-                            <NavigationMenuTrigger className="bg-transparent">Pages</NavigationMenuTrigger>
-                            <NavigationMenuContent>
-                                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                                    <li>
-                                        <NavigationMenuLink>
-                                            <Link href="#" className="block text-sm font-medium ">
-                                                Second best
-                                            </Link>  
-                                        </NavigationMenuLink>  
-                                    </li>
-                                </ul>   
-                            </NavigationMenuContent>
+                        <NavigationMenuItem className="hover:bg-zinc-200 rounded-md w-max py-2 px-3">
+                            <Link href="/about" legacyBehavior passHref>
+                                <NavigationMenuLink className="font-medium text-sm px-3">About Us</NavigationMenuLink>
+                            </Link>
                         </NavigationMenuItem>
                     </NavigationMenuList>
                 </NavigationMenu>
