@@ -51,4 +51,4 @@ export default function Slide() {
             </Swiper>
         </section>
 	);
-}
+};

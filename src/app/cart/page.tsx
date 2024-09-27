@@ -5,13 +5,57 @@ import { UserContext } from '@/app/contexts/UserContext';
 import Header from '@/app/components/Header';
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
-import CartItems from '@/app/components/CartItems';
+import CartItems from '@/app/cart/components/CartItems';
+import Link from 'next/link';
+import Stepper from '@/app/cart/components/Stepper';
+import { z } from 'zod';
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+    Form,
+    FormControl,
+    FormDescription,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+  } from "@/components/ui/form";
+import ShippingAddressForm from '@/app/cart/components/ShippingAddressForm';
+import PaymentForm from '@/app/cart/components/PaymentForm';
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);
     const [productData, setProductData] = useState<any[]>([]);
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
     const [grandTotal, setGrandTotal] = useState<number>(0);
+    const steps = ["Cart", "Shipping", "Payment", "Confirm"];
+    const [currentStep, setCurrentStep] = useState<number>(1);
+    const form = useForm();
+
+
+    const formSchema = z.object({
+      firstName: z.string().min(1, "First Name is required"),
+      lastName: z.string().min(1, "Last Name is required"),
+      email: z.string().email("Invalid email address"),
+      streetAddress: z.string().min(1, "Street Address is required"),
+      city: z.string().min(1, "City is required"),
+      state: z.string().min(1, "State is required"),
+      postalCode: z.string().min(5, "Postal Code must be at least 5 characters"),
+      country: z.string().min(1, "Country is required"),
+      phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
+    });
+    
 
     // Get all products in cart based on User ID
     useEffect(() => {
@@ -50,8 +94,7 @@ export default function ProductsPage() {
                 });
         };
         fetchCardData();
-    }, [productData]);
-
+    }, []);
 
     // Handle total amount updates from each cart item
     const calculateGrandTotal = (newQuantity:number) => {
@@ -60,24 +103,41 @@ export default function ProductsPage() {
         }, 0);
         setGrandTotal(newTotal);
     };
-    
+
+    // Handle delete items in cart
     const handleClearCart = () => {
         axios.delete('https://fakestoreapi.com/carts/3')
-            .then(() => {
-                setProductData([]);
-                setCartData([]);
+            .then(response => {
+                setProductData(response.data);
             })
             .catch(error => {
                 console.error(error);
             });
     };
 
+    // Handle for next step on button click 
+    const handleNextStep = () => {
+        setCurrentStep(currentStep + 1);
+        console.log(currentStep + 1);
+    };
+
+    // Handle for previous step on button click 
+    const handlePreviousStep = () => {
+        setCurrentStep(currentStep - 1);
+        console.log(currentStep);
+    };
+
     return (
         <main>
             <Header />
-            <section className="cart-items-section px-24 mt-4">
-                <div className="flex gap-24">
-                    <ul className="rounded-xl w-2/3 border-zinc-200 bg-white py-5 px-7">
+            <main className="cart-section px-24 mt-4">
+                <Stepper
+                    steps={steps}
+                    currentStep={currentStep}
+                />
+                {/* {currentStep === 1 && 
+                <section className="cart-items-section flex gap-16 items-start">
+                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li className="flex justify-between">
                             <h2 className="font-semibold text-lg">Cart</h2>
                             <Button className="bg-transparent hover:bg-red-50 shadow-none text-xs text-red-500" onClick={handleClearCart}>
@@ -87,11 +147,11 @@ export default function ProductsPage() {
                                 Clear cart
                             </Button>
                         </li>
-                        {productData ? (
+                        {productData.length > 0 ? (
                         <li>
                             <Table>
                                 <TableHeader>
-                                    <TableRow>
+                                    <TableRow className="hover:bg-transparent">
                                         <TableHead>Product</TableHead>
                                         <TableHead>Quantity</TableHead>
                                         <TableHead>Price</TableHead>
@@ -116,14 +176,233 @@ export default function ProductsPage() {
                             
                         </li>
                         ) : (
-                            <p>Cart Empty</p>
+                            <div className="text-center my-4 w-full text-zinc-400">
+                                <img src="/empty-cart.svg" className="size-10 mx-auto mb-4" />
+                                <h3 className="font-bold text-xl mb-1">Your Cart is empty :^(</h3>
+                                <p className="text-base mb-7">Looks like you haven't added anything to your cart yet</p>
+                                <Link href="/products" className="bg-yellow-400 text-white font-medium px-5 py-3 rounded-lg mt-3">Start Shopping</Link>
+                            </div>
                         )}
                     </ul>
-                    <ul>
-                        <li><h3>Grand Total: $ {grandTotal.toFixed(2)}</h3></li>
+                    {productData.length > 0 && (
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                        <li className="font-semibold text-lg mb-4">Order Summary</li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                            <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Discount</p>
+                            <span className="text-sm">$0.00</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Delivery Charges</p>
+                            <span className="text-sm">Free Delivery</span>
+                        </li>
+                        <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                        <li className="flex justify-between">
+                            <p className="text-sm font-bold">Total Amount</p>
+                            <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                        </li>
+                        <li className="mt-3">
+                            <Button className="w-full font-semibold bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400" onClick={handleNextStep}>
+                                Place Order
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ms-1 size-3">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                </svg>
+                            </Button>
+                        </li>
                     </ul>
-                </div>
-            </section>
+                    )}
+                </section>             
+                }
+                {currentStep === 2 &&
+                <section className="delivery-section flex gap-16 items-start">
+                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                        <li>
+                            <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3 me-2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                            Back to Cart
+                            </Button>
+                            <h2 className="font-semibold text-lg">Shipping Details</h2>
+                            <p className="text-sm text-zinc-500">Please provide relevant information for your order</p>
+                        </li>
+                        <li>
+                            <ShippingAddressForm />
+                        </li>
+                    </ul>
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                        <li className="font-semibold text-lg mb-4">Order Summary</li>
+                        {productData.length > 0 && (
+                        <li>
+                            {productData.map((product) => (
+                                <div key={product.id} className="flex justify-between items-center mb-2 gap-3">
+                                    <img src={product.image} className="w-1/4" />
+                                    <ul className="text-sm w-3/4">
+                                        <li className="font-medium truncate">{product.title}</li>
+                                        <li>Quantity: {product.quantity}</li>
+                                        <li className="text-base font-bold">$ {product.price}</li>
+                                    </ul>
+                                </div>
+                            ))}
+                        </li>
+                        )}
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                            <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Discount</p>
+                            <span className="text-sm">$0.00</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Delivery Charges</p>
+                            <span className="text-sm">Free Delivery</span>
+                        </li>
+                        <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                        <li className="flex justify-between">
+                            <p className="text-sm font-bold">Total Amount</p>
+                            <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                        </li>
+                    </ul>
+                </section>             
+                }
+                {currentStep === 3 &&
+                <section className="delivery-section flex gap-16 items-start">
+                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                        <li>
+                            <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3 me-2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                            Back to Shipping
+                            </Button>
+                            <h2 className="font-semibold text-lg">Payment Details</h2>
+                            <p className="text-sm text-zinc-500">Please provide relevant information for your order</p>
+                        </li>
+                        <li>
+                            <PaymentForm />
+                        </li>
+                    </ul>
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                        <li className="font-semibold text-lg mb-4">Order Summary</li>
+                        {productData.length > 0 && (
+                        <li>
+                            {productData.map((product) => (
+                                <div key={product.id} className="flex justify-between items-center mb-2 gap-3">
+                                    <img src={product.image} className="w-1/4" />
+                                    <ul className="text-sm w-3/4">
+                                        <li className="font-medium truncate">{product.title}</li>
+                                        <li>Quantity: {product.quantity}</li>
+                                        <li className="text-base font-bold">$ {product.price}</li>
+                                    </ul>
+                                </div>
+                            ))}
+                        </li>
+                        )}
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                            <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Discount</p>
+                            <span className="text-sm">$0.00</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Delivery Charges</p>
+                            <span className="text-sm">Free Delivery</span>
+                        </li>
+                        <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                        <li className="flex justify-between">
+                            <p className="text-sm font-bold">Total Amount</p>
+                            <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                        </li>
+                    </ul>
+                </section>
+                }
+                {currentStep === 4 && */}
+                <section className="delivery-section flex gap-16 items-start">
+                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                        <li>
+                            <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3 me-2">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                            Back to Payment
+                            </Button>
+                            <h2 className="font-semibold text-lg">Confirm Details</h2>
+                            <p className="text-sm text-zinc-500">Please double check your information regarding your order</p>
+                        </li>
+                        <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                        <li>
+                            <h3>Shipping</h3>
+                            <ul></ul>
+                        </li>
+                        <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                        <li>
+                            <h3>Payment</h3>
+                            <ul></ul>
+                        </li>
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button className="mt-4 bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400 shadow-none font-semibold w-full">Confirm</Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-md">
+                                <DialogHeader>
+                                    <DialogTitle>Share link</DialogTitle>
+                                    <DialogDescription>
+                                        Anyone who has this link will be able to view this.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <DialogFooter className="sm:justify-start">
+                                    <DialogClose asChild>
+                                        <Button type="button" variant="secondary">
+                                            Close
+                                        </Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    </ul>
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                        <li className="font-semibold text-lg mb-4">Order Summary</li>
+                        {productData.length > 0 && (
+                        <li>
+                            {productData.map((product) => (
+                                <div key={product.id} className="flex justify-between items-center mb-2 gap-3">
+                                    <img src={product.image} className="w-1/4" />
+                                    <ul className="text-sm w-3/4">
+                                        <li className="font-medium truncate">{product.title}</li>
+                                        <li>Quantity: {product.quantity}</li>
+                                        <li className="text-base font-bold">$ {product.price}</li>
+                                    </ul>
+                                </div>
+                            ))}
+                        </li>
+                        )}
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                            <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Discount</p>
+                            <span className="text-sm">$0.00</span>
+                        </li>
+                        <li className="flex justify-between">
+                            <p className="text-xs text-zinc-400">Delivery Charges</p>
+                            <span className="text-sm">Free Delivery</span>
+                        </li>
+                        <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                        <li className="flex justify-between">
+                            <p className="text-sm font-bold">Total Amount</p>
+                            <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                        </li>
+                    </ul>
+                </section>   
+                {/* } */}
+            </main>
         </main>
     );
 }
