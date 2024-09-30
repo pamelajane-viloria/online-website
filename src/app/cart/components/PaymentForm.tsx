@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback, useContext, } from 'react'
+import { useState, useEffect, useCallback, useContext, FC } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-const PaymentForm = () => {
+interface paymentProps {
+    handleNext: () => void;
+}
+
+const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
     const formSchema = z.object({
         cardNumber: z.string().min(1, "First Name is required"),
         expirationDate: z.string().min(1, "Last Name is required"),
@@ -29,7 +33,8 @@ const PaymentForm = () => {
 	} = methods;
 
 	const onSubmit = (data: FormData) => {
-		localStorage.setItem('payment', JSON.stringify(data));
+		localStorage.setItem('paymentData', JSON.stringify(data));
+		handleNext();
 	};
   
 

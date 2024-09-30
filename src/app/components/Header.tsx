@@ -28,7 +28,6 @@ const Header = () => {
             axios.get('https://fakestoreapi.com/products')
                 .then(response => {
                     setProductsData(response.data);
-                    console.log("Fetch product data success");
                 })
                 .catch(error => {
                     console.error(error);

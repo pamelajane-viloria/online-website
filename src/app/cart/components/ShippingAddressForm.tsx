@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useCallback, useContext, } from 'react'
+import { useState, useEffect, useCallback, useContext, FC } from 'react'
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
-const CheckoutForm = () => {
+interface shippingProps {
+    handleNext: () => void;
+}
+
+const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
     const formSchema = z.object({
         firstName: z.string().min(1, "First Name is required"),
         lastName: z.string().min(1, "Last Name is required"),
@@ -34,7 +38,8 @@ const CheckoutForm = () => {
 	} = methods;
 
 	const onSubmit = (data: FormData) => {
-		localStorage.setItem('data', JSON.stringify(data));
+		localStorage.setItem('shippingData', JSON.stringify(data));
+		handleNext();
 	};
   
 

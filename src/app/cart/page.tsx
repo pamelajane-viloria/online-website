@@ -12,27 +12,10 @@ import { z } from 'zod';
 import { useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-  } from "@/components/ui/form";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import ShippingAddressForm from '@/app/cart/components/ShippingAddressForm';
 import PaymentForm from '@/app/cart/components/PaymentForm';
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog"
 
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);
@@ -41,21 +24,21 @@ export default function ProductsPage() {
     const [grandTotal, setGrandTotal] = useState<number>(0);
     const steps = ["Cart", "Shipping", "Payment", "Confirm"];
     const [currentStep, setCurrentStep] = useState<number>(1);
-    const form = useForm();
-
-
-    const formSchema = z.object({
-      firstName: z.string().min(1, "First Name is required"),
-      lastName: z.string().min(1, "Last Name is required"),
-      email: z.string().email("Invalid email address"),
-      streetAddress: z.string().min(1, "Street Address is required"),
-      city: z.string().min(1, "City is required"),
-      state: z.string().min(1, "State is required"),
-      postalCode: z.string().min(5, "Postal Code must be at least 5 characters"),
-      country: z.string().min(1, "Country is required"),
-      phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
+    const [shipping, setShipping] = useState<any>(() => {
+        const shippingData = localStorage.getItem('shippingData');
+        if (shippingData) {
+          return JSON.parse(shippingData);
+        }
+        return {};
     });
-    
+    const [payment, setPayment] = useState<any>(() => {
+        const paymentData = localStorage.getItem('paymentData');
+        if (paymentData) {
+          return JSON.parse(paymentData);
+        }
+        return {};
+    });    
+    const form = useForm();
 
     // Get all products in cart based on User ID
     useEffect(() => {
@@ -118,14 +101,22 @@ export default function ProductsPage() {
     // Handle for next step on button click 
     const handleNextStep = () => {
         setCurrentStep(currentStep + 1);
-        console.log(currentStep + 1);
     };
 
     // Handle for previous step on button click 
     const handlePreviousStep = () => {
         setCurrentStep(currentStep - 1);
-        console.log(currentStep);
     };
+
+    // Fetch shipping data
+    useEffect(() => {
+        setShipping(JSON.parse(localStorage.getItem('shippingData') || '[]'));
+    }, []);
+
+    // Fetch payment data
+    useEffect(() => {
+        setPayment(JSON.parse(localStorage.getItem('paymentData') || '[]'));
+    }, []); 
 
     return (
         <main>
@@ -135,7 +126,7 @@ export default function ProductsPage() {
                     steps={steps}
                     currentStep={currentStep}
                 />
-                {/* {currentStep === 1 && 
+                {currentStep === 1 && 
                 <section className="cart-items-section flex gap-16 items-start">
                     <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li className="flex justify-between">
@@ -230,7 +221,9 @@ export default function ProductsPage() {
                             <p className="text-sm text-zinc-500">Please provide relevant information for your order</p>
                         </li>
                         <li>
-                            <ShippingAddressForm />
+                            <ShippingAddressForm 
+                                handleNext={handleNextStep}
+                            />
                         </li>
                     </ul>
                     <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
@@ -283,7 +276,9 @@ export default function ProductsPage() {
                             <p className="text-sm text-zinc-500">Please provide relevant information for your order</p>
                         </li>
                         <li>
-                            <PaymentForm />
+                            <PaymentForm 
+                                handleNext={handleNextStep}
+                            />
                         </li>
                     </ul>
                     <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
@@ -322,7 +317,7 @@ export default function ProductsPage() {
                     </ul>
                 </section>
                 }
-                {currentStep === 4 && */}
+                {currentStep === 4 &&
                 <section className="delivery-section flex gap-16 items-start">
                     <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
@@ -337,23 +332,28 @@ export default function ProductsPage() {
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li>
-                            <h3>Shipping</h3>
-                            <ul></ul>
+                            <h3 className="font-medium">Shipping</h3>
+                            <div className="text-zinc-500 text-sm">
+                                Shipping to: {shipping.firstName} {shipping.lastName} / {shipping.address} / {shipping.postalCode} / {shipping.phoneNumber}
+                            </div>
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li>
-                            <h3>Payment</h3>
-                            <ul></ul>
+                            <h3 className="font-medium">Payment</h3>
+                            <div className="text-zinc-500 text-sm">
+                                Shipping to: {payment.cardNumber} / {payment.expirationDate} / {payment.name}
+                            </div>
                         </li>
                         <Dialog>
                             <DialogTrigger asChild>
                                 <Button className="mt-4 bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400 shadow-none font-semibold w-full">Confirm</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
-                                <DialogHeader>
-                                    <DialogTitle>Share link</DialogTitle>
+                                <DialogHeader className="">
+                                    <img src="/check-circle.svg" className="size-12" />
+                                    <DialogTitle>Thank your for your order</DialogTitle>
                                     <DialogDescription>
-                                        Anyone who has this link will be able to view this.
+                                        The order confirmation has been sent to {shipping.email}
                                     </DialogDescription>
                                 </DialogHeader>
                                 <DialogFooter className="sm:justify-start">
@@ -401,7 +401,7 @@ export default function ProductsPage() {
                         </li>
                     </ul>
                 </section>   
-                {/* } */}
+                }
             </main>
         </main>
     );
