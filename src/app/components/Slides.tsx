@@ -5,7 +5,7 @@ import "../styles/slides.css";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { Autoplay, Pagination } from 'swiper/modules';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -42,7 +42,7 @@ export default function Slide() {
                                 <h2 className="font-bold text-4xl mb-3">{picture.title}</h2>
                                 <p className="italic font-light mb-5">{picture.subtitle}</p>
                                 <Button variant="outline" className="bg-transparent rounded-sm border-zinc-900 hover:bg-zinc-900 hover:text-zinc-50 shadow-none">
-                                    <Link href="/">Shop now!</Link>
+                                    <Link href="/products">Shop now!</Link>
                                 </Button>
                             </div>
                         </motion.div>

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 
 interface shippingProps {
     handleNext: () => void;
-}
+};
 
 const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
     const formSchema = z.object({

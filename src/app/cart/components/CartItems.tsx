@@ -1,9 +1,8 @@
 "use client"
-import React, { useContext, useState, FC, useCallback, useEffect } from 'react';
+import React, {  useState, FC, useEffect } from 'react';
 import axios from 'axios';
-import { toast } from "sonner"
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
-import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { TableCell, TableRow, } from "@/components/ui/table";
 
 interface cartItemsProps {
     userId: number,
@@ -27,7 +26,7 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
             setQuantityCount(Math.max(quantityCount - 1, 1)); 
         }
         onUpdateTotal(quantityCount);
-        axios.put('https://fakestoreapi.com/carts/7',{
+        axios.put(`https://fakestoreapi.com/carts/${userId}`,{
                 userId: userId,
                 date:new Date().toISOString(),
                 products:{productId:id,quantity:quantityCount}
@@ -81,16 +80,7 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
                 </form>
             </TableCell>
             <TableCell className="font-bold text-lg">$ {totalAmount.toFixed(2)}</TableCell>
-            <TableCell>
-                <Button variant="ghost" className="hover:bg-transparent">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 text-red-500">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
-                </Button>
-            </TableCell>
         </TableRow>
-
-
     );
 };
 

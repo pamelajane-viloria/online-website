@@ -1,21 +1,17 @@
 'use client'
-import { useState, useEffect, useCallback, useContext, } from 'react'
+import { useState, useEffect, useContext, } from 'react'
 import axios from 'axios';
 import { UserContext } from '@/app/contexts/UserContext';
 import Header from '@/app/components/Header';
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
+import { Table, TableBody, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import CartItems from '@/app/cart/components/CartItems';
 import Link from 'next/link';
 import Stepper from '@/app/cart/components/Stepper';
-import { z } from 'zod';
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
 import ShippingAddressForm from '@/app/cart/components/ShippingAddressForm';
 import PaymentForm from '@/app/cart/components/PaymentForm';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog"
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog"
+import Loading from '@/app/components/Loading';
 
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);
@@ -24,6 +20,7 @@ export default function ProductsPage() {
     const [grandTotal, setGrandTotal] = useState<number>(0);
     const steps = ["Cart", "Shipping", "Payment", "Confirm"];
     const [currentStep, setCurrentStep] = useState<number>(1);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [shipping, setShipping] = useState<any>(() => {
         const shippingData = localStorage.getItem('shippingData');
         if (shippingData) {
@@ -38,17 +35,15 @@ export default function ProductsPage() {
         }
         return {};
     });    
-    const form = useForm();
 
     // Get all products in cart based on User ID
     useEffect(() => {
         const fetchCardData = () => {
-            // axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
-            axios.get(`https://fakestoreapi.com/carts/3`)
+            setIsLoading(true);
+            axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
                 .then(response => {
                     setCartData(response.data);
                     const products = response.data.products;
-
                     // Start of product details promise
                     const productDetailsPromise = products.map((product: { productId: number; quantity: number }) => {
                         return axios.get(`https://fakestoreapi.com/products/${product.productId}`)
@@ -65,6 +60,7 @@ export default function ProductsPage() {
                                 return sum + product.price * product.quantity;
                             }, 0);
                             setGrandTotal(initialTotal);
+                            setIsLoading(false);
                         })
                         .catch(error => {
                             console.error(error);
@@ -127,7 +123,7 @@ export default function ProductsPage() {
                     currentStep={currentStep}
                 />
                 {currentStep === 1 && 
-                <section className="cart-items-section flex gap-16 items-start">
+                <section className="cart-items-section flex gap-16 items-start mb-16">
                     <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li className="flex justify-between">
                             <h2 className="font-semibold text-lg">Cart</h2>
@@ -138,42 +134,47 @@ export default function ProductsPage() {
                                 Clear cart
                             </Button>
                         </li>
-                        {productData.length > 0 ? (
-                        <li>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="hover:bg-transparent">
-                                        <TableHead>Product</TableHead>
-                                        <TableHead>Quantity</TableHead>
-                                        <TableHead>Price</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {productData.map((product) => (
-                                        <CartItems 
-                                            key={product.id}
-                                            userId={1}
-                                            id={product.id}
-                                            title={product.title}
-                                            image={product.image}
-                                            category={product.category}
-                                            price={product.price}
-                                            quantity={product.quantity}
-                                            onUpdateTotal={calculateGrandTotal}
-                                        />
-                                    ))}
-                                </TableBody>
-                            </Table>
-                            
-                        </li>
+                        {isLoading ? (
+                            <Loading />
                         ) : (
-                            <div className="text-center my-4 w-full text-zinc-400">
-                                <img src="/empty-cart.svg" className="size-10 mx-auto mb-4" />
-                                <h3 className="font-bold text-xl mb-1">Your Cart is empty :^(</h3>
-                                <p className="text-base mb-7">Looks like you haven't added anything to your cart yet</p>
-                                <Link href="/products" className="bg-yellow-400 text-white font-medium px-5 py-3 rounded-lg mt-3">Start Shopping</Link>
-                            </div>
+                            <>
+                            {productData.length > 0 ? (
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow className="hover:bg-transparent">
+                                            <TableHead>Product</TableHead>
+                                            <TableHead>Quantity</TableHead>
+                                            <TableHead>Price</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {productData.map((product) => (
+                                            <CartItems 
+                                                key={product.id}
+                                                userId={loggedInUser.id}
+                                                id={product.id}
+                                                title={product.title}
+                                                image={product.image}
+                                                category={product.category}
+                                                price={product.price}
+                                                quantity={product.quantity}
+                                                onUpdateTotal={calculateGrandTotal}
+                                            />
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            ) : (
+                                <div className="text-center my-4 w-full text-zinc-400">
+                                    <img src="/empty-cart.svg" className="size-10 mx-auto mb-4" />
+                                    <h3 className="font-bold text-xl mb-1">Your Cart is empty :^(</h3>
+                                    <p className="text-base mb-7">Looks like you haven't added anything to your cart yet</p>
+                                    <Link href="/products" className="bg-yellow-400 text-white font-medium px-5 py-3 rounded-lg mt-3">Start Shopping</Link>
+                                </div>
+                            )}
+                            </>
                         )}
+                        <li>
+                        </li>
                     </ul>
                     {productData.length > 0 && (
                     <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
@@ -208,7 +209,7 @@ export default function ProductsPage() {
                 </section>             
                 }
                 {currentStep === 2 &&
-                <section className="delivery-section flex gap-16 items-start">
+                <section className="delivery-section flex gap-16 items-start mb-16">
                     <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
                             <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
@@ -263,7 +264,7 @@ export default function ProductsPage() {
                 </section>             
                 }
                 {currentStep === 3 &&
-                <section className="delivery-section flex gap-16 items-start">
+                <section className="delivery-section flex gap-16 items-start mb-16">
                     <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
                             <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
@@ -318,7 +319,7 @@ export default function ProductsPage() {
                 </section>
                 }
                 {currentStep === 4 &&
-                <section className="delivery-section flex gap-16 items-start">
+                <section className="delivery-section flex gap-16 items-start mb-16">
                     <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
                             <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
@@ -349,20 +350,20 @@ export default function ProductsPage() {
                                 <Button className="mt-4 bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400 shadow-none font-semibold w-full">Confirm</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
-                                <DialogHeader className="">
+                                <DialogHeader className="items-center justify-center">
                                     <img src="/check-circle.svg" className="size-12" />
                                     <DialogTitle>Thank your for your order</DialogTitle>
                                     <DialogDescription>
                                         The order confirmation has been sent to {shipping.email}
                                     </DialogDescription>
                                 </DialogHeader>
-                                <DialogFooter className="sm:justify-start">
+                                <Link href="/">
                                     <DialogClose asChild>
-                                        <Button type="button" variant="secondary">
-                                            Close
+                                        <Button type="button" className="flex w-full bg-yellow-400 text-zinc-900 hover:bg-yellow-500">
+                                            Continue Shopping
                                         </Button>
                                     </DialogClose>
-                                </DialogFooter>
+                                </Link>
                             </DialogContent>
                         </Dialog>
                     </ul>
@@ -405,4 +406,4 @@ export default function ProductsPage() {
             </main>
         </main>
     );
-}
+};

@@ -3,22 +3,25 @@ import Header from "@/app/components/Header";
 import React, { useContext, useState, useEffect } from 'react';
 import Slides from '@/app/components/Slides';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { CategoryContext } from "@/app/contexts/CategoryContext";
 import axios from 'axios';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import './styles/slides.css';
 import 'swiper/css';
 import { Navigation } from 'swiper/modules';
-import { Button, buttonVariants } from "@/components/ui/button";
-import { toast } from "sonner"
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import Rating from "@/app/components/Rating";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { UserContext } from '@/app/contexts/UserContext';
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import Login from "@/app/components/Login";
 
 export default function Home() {
 	const { handleCategoryClick } = useContext(CategoryContext);
     const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+	const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
 	const customerExperience = [
 		{ id: 1, icon: "/new-arrival-everyday.svg", title: "New Arrival Everyday", description: "We update our collection almost everyday" },
@@ -42,7 +45,7 @@ export default function Home() {
 
 	const handleAddToCartClick = (productId:number) => {
         axios.post('https://fakestoreapi.com/carts',{
-            userId:5,
+            userId:loggedInUser.id,
             date:new Date().toISOString(),
             products:{productId:productId,quantity:1}
         })
@@ -96,7 +99,7 @@ export default function Home() {
 						</Link>
 					</div>
 					<div className="col-span-2 sm:col-span-1 md:col-span-2 bg-stone-50">
-						<div onClick={() => handleCategoryClick("electronics")} className="group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 mb-4">
+						<div onClick={() => handleCategoryClick("electronics")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 mb-4">
 							<img src="/electronics.jpeg" 
 								alt="" 
 								className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" 
@@ -105,12 +108,12 @@ export default function Home() {
 							<h3 className="z-10 font-bold text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Electronics</h3>
 						</div>
 						<div className="grid gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
-							<div onClick={() => handleCategoryClick("men's clothing")} className="group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
+							<div onClick={() => handleCategoryClick("men's clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
 								<img src="/men's clothing.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 								<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
 								<h3 className="z-10 font-bold text-nowrap text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Men's Clothing</h3>
 							</div>
-							<div onClick={() => handleCategoryClick("women's clothing")} className="group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
+							<div onClick={() => handleCategoryClick("women's clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
 								<img src="/women's clothing.webp" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 								<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
 								<h3 className="z-10 font-bold text-nowrap text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Women's Clothing</h3>
@@ -118,7 +121,7 @@ export default function Home() {
 						</div>
 					</div>
 					<div className="col-span-2 sm:col-span-1 md:col-span-1 bg-sky-50 h-auto md:h-full flex flex-col">
-						<div onClick={() => handleCategoryClick("jewelry")} className="group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 flex-grow">
+						<div onClick={() => handleCategoryClick("jewelry")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 flex-grow">
 							<img src="/jewelry.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 							<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
 							<h3 className="z-10 font-bold text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Jewelry</h3>
@@ -163,9 +166,20 @@ export default function Home() {
 									<h4 className="font-medium text-sm">{product.title}</h4>
 									<p className="text-lg font-bold">${product.price}</p>
 								</div>
+								{loggedInUser ? (
 								<Button onClick={() => handleAddToCartClick(product.id)} className="bg-yellow-400 hover:bg-yellow-600">
 									<img src="/add-cart.svg"/>
 								</Button>
+								) : (
+								<Dialog>
+									<DialogTrigger asChild>
+										<Button className="bg-yellow-400 hover:bg-yellow-600">
+											<img src="/add-cart.svg"/>
+										</Button>
+									</DialogTrigger>
+									<Login />
+								</Dialog>
+								)}
 							</div>
 						</SwiperSlide>
 					))}					
@@ -182,7 +196,7 @@ export default function Home() {
 						<li className="font-medium text-2xl mt-2 text-white">Get an extra 10% off & free shipping</li>
 						<li className="mt-3">
 							<Button variant="outline" className="bg-transparent rounded-sm  text-white border-white hover:bg-white hover:text-zinc-900 shadow-none">
-								<Link href="/">Shop now →</Link>
+								<Link href="/products">Shop now →</Link>
 							</Button>
 						</li>
 					</ul>

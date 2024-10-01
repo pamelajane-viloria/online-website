@@ -1,8 +1,12 @@
 "use client"
-import React, { useContext, useState, FC } from 'react';
+import React, { useContext, FC } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Rating from '@/app/components/Rating';
+import Link from 'next/link';
+import { UserContext } from '@/app/contexts/UserContext';
+import Login from './Login';
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 interface productProps {
     productId: number,
@@ -13,33 +17,52 @@ interface productProps {
     rate: number,
     count: number,
     onAddToCart: any
-}
+};
 
 const ProductCard: FC<productProps> = ({ productId, title, price, description, image, rate, count, onAddToCart }: productProps) => {
+    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
     return (
         <Card className="bg-transparent shadow-none border-0">
-            <CardHeader className="h-96 p-10 bg-white rounded-xl">
-                <img src={image} className="block w-full h-full object-contain object-center rounded-xl" />
-            </CardHeader>
-            <CardContent className="flex justify-between px-0 pt-3">
-                <div>
-                    <CardTitle className="block truncate max-w-48">{title}</CardTitle>
-                    <CardDescription className="block truncate max-w-48 mt-px">{description}</CardDescription>
-                    <div className="flex items-center text-xs text-zinc-500 mt-2">
-                        <Rating rate={rate} />
-                        <span>({count})</span>
+            <Link href={`/products/${productId}`}>
+                <CardHeader className="h-96 p-10 bg-white rounded-xl">
+                    <img src={image} className="block w-full h-full object-contain object-center rounded-xl" />
+                </CardHeader>
+                <CardContent className="flex justify-between px-0 py-3">
+                    <div>
+                        <CardTitle className="block truncate max-w-48">{title}</CardTitle>
+                        <CardDescription className="block truncate max-w-48 mt-px">{description}</CardDescription>
+                        <div className="flex items-center text-xs text-zinc-500 mt-2">
+                            <Rating rate={rate} />
+                            <span>({count})</span>
+                        </div>
                     </div>
+                    <div className="font-bold">${price}</div>
+                </CardContent>
+            </Link>
+            <CardFooter className="px-0">
+            {loggedInUser ? (
+                <Button 
+                    variant="outline" 
+                    className="border-2 border-zinc-900 rounded-full bg-transparent hover:bg-yellow-500 hover:text-white hover:border-yellow-500 font-medium text-sm shadow-none"
+                    onClick={() => onAddToCart(productId)}
+                >
+                    Add to Cart
+                </Button>
+            ) : (
+                <Dialog>
+                    <DialogTrigger asChild>
                     <Button 
                         variant="outline" 
-                        className="border-2 border-zinc-900 rounded-full bg-transparent hover:bg-yellow-500 hover:text-white hover:border-yellow-500 font-medium text-sm mt-4 shadow-none"
-                        onClick={() => onAddToCart(productId)}
+                        className="border-2 border-zinc-900 rounded-full bg-transparent hover:bg-yellow-500 hover:text-white hover:border-yellow-500 font-medium text-sm shadow-none"
                     >
                         Add to Cart
                     </Button>
-                </div>
-                <div className="font-bold">${price}</div>
-            </CardContent>
+                    </DialogTrigger>
+                    <Login />
+                </Dialog>
+            )}
+            </CardFooter>
         </Card>
 
     );

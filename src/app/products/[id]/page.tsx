@@ -5,27 +5,29 @@ import axios from 'axios';
 import Loading from '@/app/components/Loading';
 import Header from '@/app/components/Header';
 import Rating from '@/app/components/Rating';
-import QuantityCounter from '@/app/components/QuantityCounter';
 import { UserContext } from '@/app/contexts/UserContext';
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import Login from '@/app/components/Login';
 
 export default function ProductDetails() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const productId = useParams();
-    const router = useRouter();    
     const [productData, setProductData] = useState<any>(null);
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
     const [quantityCount, setQuantityCount] = useState<number>(1);
 
+    // increment or decrement quantity value
     const handleUpdateQuantity = (addminus:string) => {
         if (addminus === 'add') {
             setQuantityCount(quantityCount + 1);
         } else if (addminus === 'minus') {
             setQuantityCount(quantityCount - 1);
         }
-    }
+    };
 
+    // Fetch product details
     useEffect(() => {
         setIsLoading(true);
         const fetchProductData = () => {
@@ -47,7 +49,7 @@ export default function ProductDetails() {
     // Handle for add to cart on click
     const handleAddToCartClick = (productId:number, quantity:number) => {
         axios.post('https://fakestoreapi.com/carts',{
-            userId:1,
+            userId:loggedInUser.id,
             date:new Date().toISOString(),
             products:{productId:productId,quantity:quantity}
         })
@@ -64,7 +66,7 @@ export default function ProductDetails() {
         .catch(error => {
             console.error(error);
         });
-    }
+    };
 
     return (
         <main>
@@ -73,7 +75,6 @@ export default function ProductDetails() {
                 <Loading />
             ) : (
             <section className="product-details-section px-24 mt-4">
-                <div className="mb-6">Breadcrumb</div>
                 {productData ? (
                     <div className="flex justify-between gap-24">
                         <div className="w-1/2 h-[70vh] bg-white p-3 rounded-xl">
@@ -118,12 +119,25 @@ export default function ProductDetails() {
                                 </div>
                             </li>
                             <li>
+                            {loggedInUser ? (
                                 <Button  
                                     className="rounded-lg bg-yellow-500 hover:bg-yellow-600 hover:text-white hover:border-yellow-500 font-bold mt-7 shadow-none w-full py-5"
                                     onClick={() => handleAddToCartClick(productData.id, quantityCount)}
                                 >
                                     Add to Cart 
                                 </Button>
+                            ) : (
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                    <Button  
+                                        className="rounded-lg bg-yellow-500 hover:bg-yellow-600 hover:text-white hover:border-yellow-500 font-bold mt-7 shadow-none w-full py-5"
+                                    >
+                                        Add to Cart 
+                                    </Button>
+                                    </DialogTrigger>
+                                    <Login />
+                                </Dialog>
+                            )}
                                 <span className="text-xs flex items-center gap-3 mt-2">
                                     <img src="/fast-shipping.svg" className="size-5" />
                                     Free delivery on orders over $30.0
@@ -137,5 +151,5 @@ export default function ProductDetails() {
             </section>
             )}
         </main>
-    )
-}
+    );
+};

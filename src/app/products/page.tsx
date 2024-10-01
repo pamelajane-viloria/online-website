@@ -4,12 +4,10 @@ import axios from 'axios';
 import Loading from '@/app/components/Loading';
 import Header from '@/app/components/Header';
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/hooks/use-toast";
 import { toast } from "sonner"
-import Link from 'next/link';
-import Image from "next/image";
 import { CategoryContext } from '@/app/contexts/CategoryContext';
 import ProductCard from '@/app/components/ProductCard';
+import { UserContext } from '@/app/contexts/UserContext';
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,9 +15,7 @@ export default function ProductsPage() {
     const [categoriesData, setCategoriesData] = useState<any[]>([]);
     const [sort, setSort] = useState<boolean>(false);
     const { selectedCategory } = useContext(CategoryContext);
-    const [setSelectedCategory] = useState<any>(null);
-    const [cartItem, setCartItem] = useState<any[]>([]);
-    const orig = 'http://localhost:3000'
+    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
     // Get all products, default render
     useEffect(() => {
@@ -105,7 +101,7 @@ export default function ProductsPage() {
     // Handle for add to cart on click
     const handleAddToCartClick = (productId:number) => {
         axios.post('https://fakestoreapi.com/carts',{
-            userId:5,
+            userId:loggedInUser.id,
             date:new Date().toISOString(),
             products:{productId:productId,quantity:1}
         })
@@ -180,18 +176,16 @@ export default function ProductsPage() {
                             <ul className="grid grid-cols-4 gap-5">
                                 {productsData.map((product) => (
                                     <li key={product.id}>
-                                        <Link href={`/products/${product.id}`}>
-                                            <ProductCard 
-                                                productId={product.id}
-                                                title={product.title}
-                                                price={product.price}
-                                                description={product.description}
-                                                image={product.image}
-                                                rate={product.rating.rate}
-                                                count={product.rating.count}
-                                                onAddToCart={handleAddToCartClick}
-                                            />
-                                        </Link>
+                                        <ProductCard 
+                                            productId={product.id}
+                                            title={product.title}
+                                            price={product.price}
+                                            description={product.description}
+                                            image={product.image}
+                                            rate={product.rating.rate}
+                                            count={product.rating.count}
+                                            onAddToCart={handleAddToCartClick}
+                                        />
                                     </li>
                                 ))}
                             </ul>
@@ -203,4 +197,4 @@ export default function ProductsPage() {
             </section>
         </div>
     );
-}
+};

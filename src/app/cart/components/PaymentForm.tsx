@@ -1,16 +1,15 @@
 'use client'
-import { useState, useEffect, useCallback, useContext, FC } from 'react'
+import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage, } from "@/components/ui/form";
+import { Form, FormControl, FormItem, FormLabel, } from "@/components/ui/form";
 import { z } from 'zod';
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 interface paymentProps {
     handleNext: () => void;
-}
+};
 
 const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
     const formSchema = z.object({
