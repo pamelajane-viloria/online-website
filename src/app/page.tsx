@@ -69,25 +69,25 @@ export default function Home() {
 	return (
 		<main>
 			<Header />
-			<Slides />
-			<section className="customer-experience-container px-24 my-16">
+			{/* <Slides />
+			<section className="customer-experience-container xl:px-24 lg:px-12 px-5 my-16">
 				<div>
 					<h2 className="text-3xl font-bold">We provide best customer experience</h2>
 					<p className="text-zinc-400 italic">We ensure our customers have the best shopping experience</p>
 				</div>
-				<ul className="mt-8 flex justify-between">
+				<ul className="mt-8 grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-5 justify-between">
 					{customerExperience.map((item) => (
-						<li className="w-1/4" key={item.id}>
-							<div className="size-10 p-2 bg-yellow-100 rounded-lg mb-3">
+						<li className="lg:text-start text-center" key={item.id}>
+							<div className="size-10 p-2 bg-yellow-100 rounded-lg mb-3 mx-auto lg:mx-0">
 								<img src={item.icon} />
 							</div>
 							<h3 className="font-medium mb-px">{item.title}</h3>
-							<p className="text-sm text-zinc-400 italic w-2/3">{item.description}</p>
+							<p className="text-sm text-zinc-400 italic lg:w-2/3">{item.description}</p>
 						</li>
 					))}
 				</ul>
 			</section>
-			<section className="categories-container px-24 my-16">
+			<section className="categories-container xl:px-24 lg:px-12 px-5 my-16">
 				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 h-full">
 					<div className="col-span-2 sm:col-span-1 md:col-span-2 bg-gray-50 h-auto md:h-full flex flex-col">
 						<Link href="/products" className="group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 flex-grow">
@@ -128,8 +128,8 @@ export default function Home() {
 						</div>
 					</div>
 				</div>
-			</section>
-			<section className="featured-products-container px-24 py-16">
+			</section> */}
+			<section className="featured-products-container xl:px-24 lg:px-12 px-5 py-16">
 				<div className="flex justify-between items-center">
 					<h2 className="text-3xl font-bold my-8 relative">Featured products</h2>
 					<div className="navigation-container">
@@ -158,7 +158,7 @@ export default function Home() {
 				>
 					{featuredProducts.map((product) => (
 						<SwiperSlide key={product.id}>
-							<div className="h-96 p-10 bg-white rounded-xl">
+							<div className="lg:h-96 h-36 p-10 bg-white rounded-xl">
 								<img src={product.image} />
 							</div>
 							<div className="flex justify-between mt-3">
@@ -185,7 +185,7 @@ export default function Home() {
 					))}					
 				</Swiper>
 			</section>
-			<section className="discount-banner-container px-24 py-16">
+			{/* <section className="discount-banner-container xl:px-24 px-12 py-16">
 				<div className="bg-yellow-500 flex items-center rounded-xl">
 					<div className="w-2/5 me-24">
 						<img src="/discount-image.jpeg" className="w-full h-full object-cover object-center rounded-l-xl" />
@@ -202,7 +202,7 @@ export default function Home() {
 					</ul>
 				</div>
 			</section>
-			<section className="reviews-container px-24 py-16">
+			<section className="reviews-container xl:px-24 px-12 py-16">
 				<h2 className="text-3xl font-bold">We love hearing from our customers</h2>
 				<p className="text-zinc-400 italic mt-3">See what our customers are saying about their interaction with us to get a better understanding of our dedication to showing you only genuine, truthful, and satisfying transactions and shopping experience.</p>
 				<div className="flex gap-8 justify-between mt-5">
@@ -245,7 +245,7 @@ export default function Home() {
 				</div>
 				<Button className="rounded-full bg-yellow-400 text-white hover:bg-yellow-700 font-bold mt-5 shadow-none float-end">Read more →</Button>
 			</section>
-			<section className="newsletter-container px-24 py-28">
+			<section className="newsletter-container xl:px-24 px-12 py-28">
 				<ul className="flex flex-col justify-center items-center gap-3">
 					<li className="text-3xl font-bold px-56 text-center	">Subscribe to our newsletter to get updates to our latest collections</li>
 					<li className="text-zinc-400 italic">Get 20% off on your first order just by subscribing to our newsletter</li>
@@ -255,10 +255,10 @@ export default function Home() {
 					</li>
 				</ul>
 			</section>
-			<footer className="bg-yellow-100 px-24 py-8 flex justify-between">
+			<footer className="bg-yellow-100 xl:px-24 px-12 py-8 flex justify-between">
 				<h4 className="inline text-xl font-bold">Jennie & CO</h4>
 				<p>©2024 Jennie & CO All rights reserved.</p>
-			</footer>
+			</footer> */}
 		</main>
 	);
 }

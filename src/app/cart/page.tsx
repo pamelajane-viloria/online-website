@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useContext, } from 'react'
+import { useState, useEffect, useContext, } from 'react';
 import axios from 'axios';
 import { UserContext } from '@/app/contexts/UserContext';
 import Header from '@/app/components/Header';
@@ -117,7 +117,7 @@ export default function ProductsPage() {
     return (
         <main>
             <Header />
-            <main className="cart-section px-24 mt-4">
+            <main className="cart-section xl:px-24 px-12 mt-4">
                 <Stepper
                     steps={steps}
                     currentStep={currentStep}
@@ -229,20 +229,6 @@ export default function ProductsPage() {
                     </ul>
                     <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
                         <li className="font-semibold text-lg mb-4">Order Summary</li>
-                        {productData.length > 0 && (
-                        <li>
-                            {productData.map((product) => (
-                                <div key={product.id} className="flex justify-between items-center mb-2 gap-3">
-                                    <img src={product.image} className="w-1/4" />
-                                    <ul className="text-sm w-3/4">
-                                        <li className="font-medium truncate">{product.title}</li>
-                                        <li>Quantity: {product.quantity}</li>
-                                        <li className="text-base font-bold">$ {product.price}</li>
-                                    </ul>
-                                </div>
-                            ))}
-                        </li>
-                        )}
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Cart Subtotal</p>
                             <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
@@ -284,20 +270,6 @@ export default function ProductsPage() {
                     </ul>
                     <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
                         <li className="font-semibold text-lg mb-4">Order Summary</li>
-                        {productData.length > 0 && (
-                        <li>
-                            {productData.map((product) => (
-                                <div key={product.id} className="flex justify-between items-center mb-2 gap-3">
-                                    <img src={product.image} className="w-1/4" />
-                                    <ul className="text-sm w-3/4">
-                                        <li className="font-medium truncate">{product.title}</li>
-                                        <li>Quantity: {product.quantity}</li>
-                                        <li className="text-base font-bold">$ {product.price}</li>
-                                    </ul>
-                                </div>
-                            ))}
-                        </li>
-                        )}
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Cart Subtotal</p>
                             <span className="text-sm">$ {grandTotal.toFixed(2)}</span>

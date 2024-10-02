@@ -74,7 +74,7 @@ export default function ProductDetails() {
             {isLoading ? (
                 <Loading />
             ) : (
-            <section className="product-details-section px-24 mt-4">
+            <section className="product-details-section xl:px-24 px-12 mt-4">
                 {productData ? (
                     <div className="flex justify-between gap-24">
                         <div className="w-1/2 h-[70vh] bg-white p-3 rounded-xl">

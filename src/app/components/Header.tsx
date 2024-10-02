@@ -4,15 +4,14 @@ import Login from './Login';
 import { UserContext } from '@/app/contexts/UserContext';
 import Link from 'next/link';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, } from "@/components/ui/select";
-import { NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from "@/components/ui/navigation-menu";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 import { useRouter } from 'next/navigation';
-
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 const Header = () => {
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
     const [search, setSearch] = useState<string>('');
@@ -45,9 +44,9 @@ const Header = () => {
     };
 
     return (
-        <div>
-            <header className="bg-yellow-400 hidden md:block">
-                <div className="flex justify-between px-24">
+        <div className="shadow md:shadow-none bg-white md:bg-transparent">
+            <header className="bg-yellow-400 hidden lg:block">
+                <div className="flex justify-between xl:px-24 lg:px-12 px-5">
                     <ul className="flex flex-row items-center gap-3">
                         <li>
                             <Select defaultValue="EN">
@@ -85,31 +84,32 @@ const Header = () => {
                     </ul>
                 </div>
             </header>
-            <nav className="flex flex-row justify-between items-center px-24 py-3 relative">
+            <nav className="flex flex-row justify-between items-center xl:px-24 lg:px-12 px-5 py-3 relative">
                 <Link href="/">
-                    <h1 className="inline text-xl font-bold">Jennie & CO</h1>
+                    <h1 className="hidden md:inline text-xl text-base font-bold">Jennie & CO</h1>
+                    <h1 className="inline md:hidden text-xl text-base font-bold">J&CO</h1>
                 </Link>
-                <NavigationMenu className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <NavigationMenu className="hidden md:flex md:absolute md:top-1/2 md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
                     <NavigationMenuList>
-                        <NavigationMenuItem className="hover:bg-zinc-200 rounded-md w-max py-2 px-3">
-                            <Link href="/" legacyBehavior passHref>
+                        <Link href="/" legacyBehavior passHref>
+                            <NavigationMenuItem className="hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
                                 <NavigationMenuLink className="font-medium text-sm">Home</NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem className="hover:bg-zinc-200 rounded-md w-max py-2 px-3">
-                            <Link href="/products" legacyBehavior passHref>
+                            </NavigationMenuItem>
+                        </Link>
+                        <Link href="/products" legacyBehavior passHref>
+                            <NavigationMenuItem className="hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
                                 <NavigationMenuLink className="font-medium text-sm px-3">Shop</NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
-                        <NavigationMenuItem className="hover:bg-zinc-200 rounded-md w-max py-2 px-3">
-                            <Link href="/about" legacyBehavior passHref>
-                                <NavigationMenuLink className="font-medium text-sm px-3">About Us</NavigationMenuLink>
-                            </Link>
-                        </NavigationMenuItem>
+                            </NavigationMenuItem>
+                        </Link>
+                        <Link href="/faqs" legacyBehavior passHref>
+                            <NavigationMenuItem className="hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
+                                <NavigationMenuLink className="font-medium text-sm px-3">FAQs</NavigationMenuLink>
+                            </NavigationMenuItem>
+                        </Link>
                     </NavigationMenuList>
                 </NavigationMenu>
-                <ul className="flex flex-row justify-between items-center gap-3">
-                    <li className="relative flex justify-end">
+                <ul className="flex flex-row justify-between items-center gap-5 md:gap-3">
+                    <li className="relative flex justify-end hidden md:block">
                         <motion.div
                             initial={{ width: '0%', opacity: 0 }}
                             animate={{ width: isInputExpanded ? '100%' : '0%', opacity: isInputExpanded ? 1 : 0 }}
@@ -162,7 +162,7 @@ const Header = () => {
                         </Dialog>
                         )}
                     </li>
-                    <li>
+                    <li className="hidden md:flex">
                     {loggedInUser ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger className="py-2 px-4">
@@ -185,8 +185,75 @@ const Header = () => {
                         </Dialog>
                     )}
                     </li>
+                    <li className="md:hidden">
+                        <Dialog>
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" className="bg-transparent">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                                        </svg>
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56">
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem>
+                                            Home
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Products
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            FAQs
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                    <DropdownMenuSeparator />
+                                    {loggedInUser ? (
+                                        <DropdownMenuItem onClick={handleLogoutUser}>
+                                            Logout
+                                        </DropdownMenuItem>
+                                    ) : (
+                                        <DialogTrigger asChild>
+                                            <DropdownMenuItem>
+                                            Login
+                                            </DropdownMenuItem>
+                                        </DialogTrigger>
+
+                                    )}
+                                </DropdownMenuContent> 
+                                <Login />
+                            </DropdownMenu>
+                        </Dialog>
+                    </li>
                 </ul>
             </nav>
+            <div className="md:hidden bg-white px-3 pb-2 focus-visible:ring-0">
+                <Input 
+                    type="search" 
+                    placeholder="Search products" 
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                    className="z-10"
+                />
+                {search && (
+                    <div id="dropdown" className="absolute mt-1 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 z-[100]">
+                        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                            {productsData.filter((row) => {
+                                if(row.title.toLowerCase().includes(search)) {
+                                    return row;
+                                }})
+                                .map((row, key) => (
+                                    <li key={key} className="">
+                                        <Link href={`/products/${row.id}`} className="block truncate max-w-xs px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+                                            {row.title}
+                                        </Link>
+                                    </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}   
+            </div>
+
         </div>
     );
 };

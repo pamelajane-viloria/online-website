@@ -25,25 +25,20 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
         } else if (addminus === 'minus') {
             setQuantityCount(Math.max(quantityCount - 1, 1)); 
         }
-        onUpdateTotal(quantityCount);
         axios.put(`https://fakestoreapi.com/carts/${userId}`,{
                 userId: userId,
                 date:new Date().toISOString(),
                 products:{productId:id,quantity:quantityCount}
             })
             .then(response => {
+                setTotalAmount((quantityCount + 1) * price);
+                onUpdateTotal(quantityCount + 1);
                 toast(`Quantity updated.`);
             })
             .catch(error => {
                 console.error(error);
             });
     }
-
-    // Calculate and update total amount of each item
-    useEffect(() => {
-        const newTotalAmount = quantityCount * price;
-        setTotalAmount(newTotalAmount);
-    }, [quantityCount]);
 
     return (
         <TableRow key={id} className="hover:bg-transparent">

@@ -125,12 +125,12 @@ export default function ProductsPage() {
     return (
         <div>
             <Header />
-            <section className="heading-section px-24 z-1 mt-4">
+            <section className="heading-section xl:px-24 px-12 z-1 mt-4">
                 <div className="bg-zinc-900 w-full h-[70vh] rounded-xl">
                     <img className="block w-full h-full object-cover object-center opacity-90 rounded-xl" src="/header1.jpeg" />
                 </div>
             </section>
-            <section className="products-section px-24 my-16">
+            <section className="products-section xl:px-24 px-12 my-16">
                 <h2 className="text-3xl font-bold">Products</h2>
                 {isLoading ? (
                     <Loading />

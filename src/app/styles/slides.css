@@ -1,6 +1,6 @@
 .swiper-container, .featured-products-container {
-    padding: 0 6rem;
-    margin-top: 1rem;
+    padding: 0;
+    margin-top: 0;
 }
 
     .swiper-container .swiper {
@@ -35,3 +35,19 @@
         object-fit: contain;
         object-position: center;
     }
+
+@media (min-width:641px) {
+    .swiper-container, .featured-products-container {
+        padding: 0 1.25rem;
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width:961px)  { 
+    .swiper-container, .featured-products-container {
+        padding: 0 6rem;
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */ }
