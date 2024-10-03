@@ -45,7 +45,7 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 
 	return (
 		<Form {...methods}>
-			<form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-3 mt-4">
+			<form onSubmit={handleSubmit(onSubmit)} className="md:grid md:grid-cols-2 flex flex-col gap-3 mt-4">
 				<FormItem className="space-y-1">
 					<FormLabel className="font-semibold text-sm">First Name <span className="text-red-500">*</span></FormLabel>
 					<FormControl>
@@ -78,15 +78,15 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 					{errors.phoneNumber && <span className="text-xs text-red-500">{errors.phoneNumber.message}</span>}
 				</FormItem>
 			
-				<div className="col-span-2 flex gap-5">
-					<FormItem className="w-2/3 space-y-1">
+				<div className="md:col-span-2 flex md:flex-row flex-col gap-5">
+					<FormItem className="md:w-2/3 space-y-1">
 						<FormLabel className="font-semibold text-sm">Address <span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('address')} placeholder="Street Address" />
 						</FormControl>
 						{errors.address && <span className="text-xs text-red-500">{errors.address.message}</span>}
 					</FormItem>
-					<FormItem className="w-1/3 space-y-1">
+					<FormItem className="md:w-1/3 space-y-1">
 						<FormLabel className="font-semibold text-sm">Postal Code <span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('postalCode')} placeholder="Postal Code" />
@@ -95,8 +95,8 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 					</FormItem>
 				</div>
 
-				<div className="col-span-2 flex gap-5">
-					<FormItem className="w-1/3 space-y-1">
+				<div className="md:col-span-2 flex md:flex-row flex-col gap-5">
+					<FormItem className="md:w-1/3 space-y-1">
 						<FormLabel className="font-semibold text-sm">City <span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('city')} placeholder="City" />
@@ -104,7 +104,7 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 						{errors.city && <span className="text-xs text-red-500">{errors.city.message}</span>}
 					</FormItem>
 
-					<FormItem className="w-1/3 space-y-1">
+					<FormItem className="md:w-1/3 space-y-1">
 						<FormLabel className="font-semibold text-sm">State <span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('state')} placeholder="State" />
@@ -112,7 +112,7 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 						{errors.state && <span className="text-xs text-red-500">{errors.state.message}</span>}
 					</FormItem>
 
-					<FormItem className="w-1/3 space-y-1">
+					<FormItem className="md:w-1/3 space-y-1">
 						<FormLabel className="font-semibold text-sm">Country <span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('country')} placeholder="Country" />
@@ -120,7 +120,7 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 						{errors.country && <span className="text-xs text-red-500">{errors.country.message}</span>}
 					</FormItem>
 				</div>
-				<Button type="submit" className="col-span-2 mt-4 bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400 shadow-none font-semibold">
+				<Button type="submit" className="fixed bottom-0 right-0 left-0 w-full lg:static lg:bottom-auto col-span-2 mt-4 bg-yellow-300 text-zinc-900 lg:rounded-lg rounded-none hover:bg-yellow-400 shadow-none font-semibold">
 					Proceed to Payment 
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ms-1 size-3">
 						<path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

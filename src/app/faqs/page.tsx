@@ -1,32 +1,19 @@
 'use client'
 import Header from "@/app/components/Header";
-import React, { useContext, useState, useEffect } from 'react';
-import Slides from '@/app/components/Slides';
-import Link from 'next/link';
-import { CategoryContext } from "@/app/contexts/CategoryContext";
-import axios from 'axios';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation } from 'swiper/modules';
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import Rating from "@/app/components/Rating";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { UserContext } from '@/app/contexts/UserContext';
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import Login from "@/app/components/Login";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "@/components/ui/accordion"
+import React from 'react';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "@/components/ui/accordion";
+
 export default function Faqs() {
     return (
         <main>
             <Header />
-            <section className="faq-section xl:px-24 px-12 pb-16 mt-[1rem]">
+            <section className="faq-section xl:px-24 lg:px-12 px-5 pb-16 lg:mt-[1rem] mt-10">
                 <h2 className="text-3xl font-bold text-center">Frequent Asked Questions</h2>
                 <p className="text-center text-zinc-500">If you have other burning questions we weren't able to address here, feel free to contact customer support.</p>
                 <ul>
-                    <li className="flex justify-between items-start my-8">
-                        <h3 className="text-2xl font-bold">Shopping FAQs</h3>
-                        <Accordion type="single" collapsible className="w-2/3">
+                    <li className="flex flex-col lg:flex-row lg:justify-between items-start my-8">
+                        <h3 className="py-4 mt-3 text-2xl font-bold">Shopping FAQs</h3>
+                        <Accordion type="single" collapsible className="lg:w-2/3 w-full mt-3">
                             <AccordionItem value="shopping1">
                                 <AccordionTrigger>What Shipping Methods Are Available?</AccordionTrigger>
                                 <AccordionContent>
@@ -53,9 +40,9 @@ export default function Faqs() {
                             </AccordionItem>
                         </Accordion>
                     </li>
-                    <li className="flex justify-between items-start my-8">
-                        <h3 className="text-2xl font-bold">Payment FAQs</h3>
-                        <Accordion type="single" collapsible className="w-2/3">
+                    <li className="flex flex-col lg:flex-row lg:justify-between items-start my-8">
+                        <h3 className="py-4 mt-3 text-2xl font-bold">Payment FAQs</h3>
+                        <Accordion type="single" collapsible className="lg:w-2/3 w-full mt-3">
                             <AccordionItem value="payment1">
                                 <AccordionTrigger>What Payment Methods Are Accepted?</AccordionTrigger>
                                 <AccordionContent>
@@ -76,9 +63,9 @@ export default function Faqs() {
                             </AccordionItem>
                         </Accordion>
                     </li>
-                    <li className="flex justify-between items-start my-8">
-                        <h3 className="text-2xl font-bold">Orders & Returns FAQs</h3>
-                        <Accordion type="single" collapsible className="w-2/3">
+                    <li className="flex flex-col lg:flex-row lg:justify-between items-start my-8">
+                        <h3 className="py-4 mt-3 text-2xl font-bold">Orders & Returns FAQs</h3>
+                        <Accordion type="single" collapsible className="lg:w-2/3 w-full mt-3">
                             <AccordionItem value="orderreturn1">
                                 <AccordionTrigger>How do I place an Order?</AccordionTrigger>
                                 <AccordionContent>

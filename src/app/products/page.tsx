@@ -6,7 +6,7 @@ import Header from '@/app/components/Header';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner"
 import { CategoryContext } from '@/app/contexts/CategoryContext';
-import ProductCard from '@/app/components/ProductCard';
+import ProductCard from '@/app/products/components/ProductCard';
 import { UserContext } from '@/app/contexts/UserContext';
 
 export default function ProductsPage() {
@@ -125,20 +125,20 @@ export default function ProductsPage() {
     return (
         <div>
             <Header />
-            <section className="heading-section xl:px-24 px-12 z-1 mt-4">
-                <div className="bg-zinc-900 w-full h-[70vh] rounded-xl">
+            <section className="heading-section xl:px-24 lg:px-12 md:px-5 z-1 md:mt-4">
+                <div className="bg-zinc-900 w-full h-[70vh] md:rounded-2xl">
                     <img className="block w-full h-full object-cover object-center opacity-90 rounded-xl" src="/header1.jpeg" />
                 </div>
             </section>
-            <section className="products-section xl:px-24 px-12 my-16">
+            <section className="products-section xl:px-24 lg:px-12 px-5 my-16">
                 <h2 className="text-3xl font-bold">Products</h2>
                 {isLoading ? (
                     <Loading />
                 ): (
                     <>
                         {categoriesData ? (
-                            <div className="flex justify-between">
-                                <ul className="flex gap-2 my-4">
+                            <div className="flex justify-between items-start">
+                                <ul className="flex flex-wrap gap-2 my-4">
                                     <li>
                                         <Button 
                                             variant="secondary" 
@@ -159,10 +159,19 @@ export default function ProductsPage() {
                                             </Button>
                                         </li>
                                     ))}
+                                    <li>
+                                        <Button 
+                                            variant="outline"
+                                            className="rounded-full shadow-none bg-transparent hover:bg-yellow-100 flex md:hidden"
+                                            onClick={() => handleSortClick(sort ? 'asc' : 'desc')}
+                                        >
+                                            Sort {sort ? '↓' : '↑'}
+                                        </Button>
+                                    </li>
                                 </ul>
                                 <Button 
                                     variant="outline"
-                                    className="rounded-full shadow-none bg-transparent hover:bg-yellow-100"
+                                    className="rounded-full shadow-none bg-transparent hover:bg-yellow-100 my-4 hidden md:flex"
                                     onClick={() => handleSortClick(sort ? 'asc' : 'desc')}
                                 >
                                     Sort {sort ? '↓' : '↑'}
@@ -171,9 +180,8 @@ export default function ProductsPage() {
                         ) : (
                             <p>No category data</p>
                         )}
-                        
                         {productsData ? (
-                            <ul className="grid grid-cols-4 gap-5">
+                            <ul className="grid lg:grid-cols-4 grid-cols-2 gap-5">
                                 {productsData.map((product) => (
                                     <li key={product.id}>
                                         <ProductCard 

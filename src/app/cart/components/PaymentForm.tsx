@@ -47,15 +47,15 @@ const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
 					</FormControl>
 					{errors.cardNumber && <span className="text-xs text-red-500">{errors.cardNumber.message}</span>}
 				</FormItem>
-				<div className="col-span-2 flex gap-5">
-					<FormItem className="w-2/3 space-y-1">
+				<div className="md:col-span-2 flex md:flex-row flex-col gap-5">
+					<FormItem className="md:w-2/3 w-full space-y-1">
 						<FormLabel className="font-semibold text-sm">Expiration Date<span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('expirationDate')} placeholder="Expiration date" />
 						</FormControl>
 						{errors.expirationDate && <span className="text-xs text-red-500">{errors.expirationDate.message}</span>}
 					</FormItem>
-					<FormItem className="w-1/3 space-y-1">
+					<FormItem className="md:w-1/3 w-full space-y-1">
 						<FormLabel className="font-semibold text-sm">CVV<span className="text-red-500">*</span></FormLabel>
 						<FormControl>
 							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('cvv')} placeholder="CVV" />
@@ -71,7 +71,7 @@ const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
 					{errors.name && <span className="text-xs text-red-500">{errors.name.message}</span>}
 				</FormItem>
 
-				<Button type="submit" className="col-span-2 mt-4 bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400 shadow-none font-semibold">
+				<Button type="submit" className="fixed bottom-0 right-0 left-0 w-full lg:static lg:bottom-auto col-span-2 mt-4 bg-yellow-300 text-zinc-900 lg:rounded-lg rounded-none hover:bg-yellow-400 shadow-none font-semibold">
 					Pay
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ms-1 size-3">
 						<path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />

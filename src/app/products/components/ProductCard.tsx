@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Rating from '@/app/components/Rating';
 import Link from 'next/link';
 import { UserContext } from '@/app/contexts/UserContext';
-import Login from './Login';
+import Login from '@/app/components/Login';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 
 interface productProps {
@@ -25,19 +25,20 @@ const ProductCard: FC<productProps> = ({ productId, title, price, description, i
     return (
         <Card className="bg-transparent shadow-none border-0">
             <Link href={`/products/${productId}`}>
-                <CardHeader className="h-96 p-10 bg-white rounded-xl">
+                <CardHeader className="lg:h-96 h-56 p-10 bg-white rounded-xl">
                     <img src={image} className="block w-full h-full object-contain object-center rounded-xl" />
                 </CardHeader>
                 <CardContent className="flex justify-between px-0 py-3">
                     <div>
-                        <CardTitle className="block truncate max-w-48">{title}</CardTitle>
-                        <CardDescription className="block truncate max-w-48 mt-px">{description}</CardDescription>
+                        <CardTitle className="block truncate lg:max-w-48 md:max-w-80 max-w-44">{title}</CardTitle>
+                        <CardDescription className="block truncate lg:max-w-48 md:max-w-80 max-w-44 mt-px">{description}</CardDescription>
+                        <div className="font-bold xl:hidden">${price}</div>
                         <div className="flex items-center text-xs text-zinc-500 mt-2">
                             <Rating rate={rate} />
                             <span>({count})</span>
                         </div>
                     </div>
-                    <div className="font-bold">${price}</div>
+                    <div className="font-bold hidden xl:flex">${price}</div>
                 </CardContent>
             </Link>
             <CardFooter className="px-0">
@@ -52,12 +53,12 @@ const ProductCard: FC<productProps> = ({ productId, title, price, description, i
             ) : (
                 <Dialog>
                     <DialogTrigger asChild>
-                    <Button 
-                        variant="outline" 
-                        className="border-2 border-zinc-900 rounded-full bg-transparent hover:bg-yellow-500 hover:text-white hover:border-yellow-500 font-medium text-sm shadow-none"
-                    >
-                        Add to Cart
-                    </Button>
+                        <Button 
+                            variant="outline" 
+                            className="border-2 border-zinc-900 rounded-full bg-transparent hover:bg-yellow-500 hover:text-white hover:border-yellow-500 font-medium text-sm shadow-none"
+                        >
+                            Add to Cart
+                        </Button>
                     </DialogTrigger>
                     <Login />
                 </Dialog>

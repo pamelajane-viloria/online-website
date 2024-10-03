@@ -40,7 +40,8 @@ export default function ProductsPage() {
     useEffect(() => {
         const fetchCardData = () => {
             setIsLoading(true);
-            axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
+            axios.get(`https://fakestoreapi.com/carts/4`)
+            // axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
                 .then(response => {
                     setCartData(response.data);
                     const products = response.data.products;
@@ -115,16 +116,16 @@ export default function ProductsPage() {
     }, []); 
 
     return (
-        <main>
+        <>
             <Header />
-            <main className="cart-section xl:px-24 px-12 mt-4">
+            <main className="cart-section xl:px-24 lg:px-12 px-5 mt-4">
                 <Stepper
                     steps={steps}
                     currentStep={currentStep}
                 />
                 {currentStep === 1 && 
-                <section className="cart-items-section flex gap-16 items-start mb-16">
-                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                <section className="cart-items-section flex flex-col md:flex-row xl:gap-16 md:gap-6 items-start mb-16 mt-5">
+                    <ul className="rounded-xl lg:w-3/4 w-full border-zinc-200 bg-white py-5 md:px-7 px-4 shadow-xl">
                         <li className="flex justify-between">
                             <h2 className="font-semibold text-lg">Cart</h2>
                             <Button className="bg-transparent hover:bg-red-50 shadow-none text-xs text-red-500" onClick={handleClearCart}>
@@ -134,24 +135,18 @@ export default function ProductsPage() {
                                 Clear cart
                             </Button>
                         </li>
+                        <li>
                         {isLoading ? (
                             <Loading />
                         ) : (
                             <>
                             {productData.length > 0 ? (
                                 <Table>
-                                    <TableHeader>
-                                        <TableRow className="hover:bg-transparent">
-                                            <TableHead>Product</TableHead>
-                                            <TableHead>Quantity</TableHead>
-                                            <TableHead>Price</TableHead>
-                                        </TableRow>
-                                    </TableHeader>
                                     <TableBody>
                                         {productData.map((product) => (
                                             <CartItems 
                                                 key={product.id}
-                                                userId={loggedInUser.id}
+                                                userId={1}
                                                 id={product.id}
                                                 title={product.title}
                                                 image={product.image}
@@ -173,11 +168,42 @@ export default function ProductsPage() {
                             )}
                             </>
                         )}
-                        <li>
+                        </li>
+                        <li className="lg:hidden block">
+                        {productData.length > 0 && (
+                            <ul className="space-y-2">
+                                <li className="font-semibold text-lg mb-4">Order Summary</li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                                    <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Discount</p>
+                                    <span className="text-sm">$0.00</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Delivery Charges</p>
+                                    <span className="text-sm">Free Delivery</span>
+                                </li>
+                                <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                                <li className="flex justify-between">
+                                    <p className="text-sm font-bold">Total Amount</p>
+                                    <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                                </li>
+                                <li className="mt-3">
+                                    <Button className="fixed bottom-0 right-0 left-0 w-full lg:static lg:bottom-auto w-full font-semibold bg-yellow-300 text-zinc-900 lg:rounded-lg rounded-none hover:bg-yellow-400" onClick={handleNextStep}>
+                                        Place Order
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="ms-1 size-3">
+                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                                        </svg>
+                                    </Button>
+                                </li>
+                            </ul>
+                        )}
                         </li>
                     </ul>
                     {productData.length > 0 && (
-                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                    <ul className="rounded-xl lg:w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2 hidden lg:block">
                         <li className="font-semibold text-lg mb-4">Order Summary</li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Cart Subtotal</p>
@@ -189,7 +215,7 @@ export default function ProductsPage() {
                         </li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Delivery Charges</p>
-                            <span className="text-sm">Free Delivery</span>
+                            <span className="text-sm text-end">Free Delivery</span>
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li className="flex justify-between">
@@ -209,8 +235,8 @@ export default function ProductsPage() {
                 </section>             
                 }
                 {currentStep === 2 &&
-                <section className="delivery-section flex gap-16 items-start mb-16">
-                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                <section className="delivery-section flex flex-col md:items-start md:flex-row xl:gap-16 md:gap-6 mb-16 mt-5">
+                    <ul className="rounded-xl lg:w-3/4 w-full border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
                             <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3 me-2">
@@ -226,8 +252,30 @@ export default function ProductsPage() {
                                 handleNext={handleNextStep}
                             />
                         </li>
+                        <li className="lg:hidden block mt-5">
+                            <ul className="space-y-2">
+                                <li className="font-semibold text-lg mb-4">Order Summary</li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                                    <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Discount</p>
+                                    <span className="text-sm">$0.00</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Delivery Charges</p>
+                                    <span className="text-sm">Free Delivery</span>
+                                </li>
+                                <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                                <li className="flex justify-between">
+                                    <p className="text-sm font-bold">Total Amount</p>
+                                    <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2 hidden lg:block">
                         <li className="font-semibold text-lg mb-4">Order Summary</li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Cart Subtotal</p>
@@ -239,7 +287,7 @@ export default function ProductsPage() {
                         </li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Delivery Charges</p>
-                            <span className="text-sm">Free Delivery</span>
+                            <span className="text-sm text-end">Free Delivery</span>
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li className="flex justify-between">
@@ -250,8 +298,8 @@ export default function ProductsPage() {
                 </section>             
                 }
                 {currentStep === 3 &&
-                <section className="delivery-section flex gap-16 items-start mb-16">
-                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                <section className="delivery-section flex flex-col md:items-start md:flex-row xl:gap-16 md:gap-6 mb-16 mt-5">
+                    <ul className="rounded-xl lg:w-3/4 w-full border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
                             <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3 me-2">
@@ -267,8 +315,30 @@ export default function ProductsPage() {
                                 handleNext={handleNextStep}
                             />
                         </li>
+                        <li className="lg:hidden block mt-5">
+                            <ul className="space-y-2">
+                                <li className="font-semibold text-lg mb-4">Order Summary</li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                                    <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Discount</p>
+                                    <span className="text-sm">$0.00</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Delivery Charges</p>
+                                    <span className="text-sm">Free Delivery</span>
+                                </li>
+                                <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                                <li className="flex justify-between">
+                                    <p className="text-sm font-bold">Total Amount</p>
+                                    <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
-                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2 hidden lg:block">
                         <li className="font-semibold text-lg mb-4">Order Summary</li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Cart Subtotal</p>
@@ -280,7 +350,7 @@ export default function ProductsPage() {
                         </li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Delivery Charges</p>
-                            <span className="text-sm">Free Delivery</span>
+                            <span className="text-sm text-end">Free Delivery</span>
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li className="flex justify-between">
@@ -291,8 +361,8 @@ export default function ProductsPage() {
                 </section>
                 }
                 {currentStep === 4 &&
-                <section className="delivery-section flex gap-16 items-start mb-16">
-                    <ul className="rounded-xl w-3/4 border-zinc-200 bg-white py-5 px-7 shadow-xl">
+                <section className="delivery-section flex flex-col md:items-start md:flex-row xl:gap-16 md:gap-6 mb-16 mt-5">
+                    <ul className="rounded-xl lg:w-3/4 w-full border-zinc-200 bg-white py-5 px-7 shadow-xl">
                         <li>
                             <Button className="bg-transparent hover:bg-transparent text-xs shadow-none text-zinc-900 px-0" onClick={handlePreviousStep}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-3 me-2">
@@ -317,9 +387,31 @@ export default function ProductsPage() {
                                 Shipping to: {payment.cardNumber} / {payment.expirationDate} / {payment.name}
                             </div>
                         </li>
+                        <li className="lg:hidden block mt-5">
+                            <ul className="space-y-2">
+                                <li className="font-semibold text-lg mb-4">Order Summary</li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Cart Subtotal</p>
+                                    <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Discount</p>
+                                    <span className="text-sm">$0.00</span>
+                                </li>
+                                <li className="flex justify-between">
+                                    <p className="text-xs text-zinc-400">Delivery Charges</p>
+                                    <span className="text-sm">Free Delivery</span>
+                                </li>
+                                <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
+                                <li className="flex justify-between">
+                                    <p className="text-sm font-bold">Total Amount</p>
+                                    <span className="font-bold">{grandTotal.toFixed(2)}</span>
+                                </li>
+                            </ul>
+                        </li>
                         <Dialog>
                             <DialogTrigger asChild>
-                                <Button className="mt-4 bg-yellow-300 text-zinc-900 rounded-lg hover:bg-yellow-400 shadow-none font-semibold w-full">Confirm</Button>
+                                <Button className="fixed bottom-0 right-0 left-0 w-full lg:static lg:bottom-auto mt-4 bg-yellow-300 text-zinc-900 lg:rounded-lg rounded-none hover:bg-yellow-400 shadow-none font-semibold w-full">Confirm</Button>
                             </DialogTrigger>
                             <DialogContent className="sm:max-w-md">
                                 <DialogHeader className="items-center justify-center">
@@ -339,22 +431,8 @@ export default function ProductsPage() {
                             </DialogContent>
                         </Dialog>
                     </ul>
-                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2">
+                    <ul className="rounded-xl w-1/4 border-zinc-200 bg-white py-5 px-7 shadow-xl space-y-2 hidden lg:block">
                         <li className="font-semibold text-lg mb-4">Order Summary</li>
-                        {productData.length > 0 && (
-                        <li>
-                            {productData.map((product) => (
-                                <div key={product.id} className="flex justify-between items-center mb-2 gap-3">
-                                    <img src={product.image} className="w-1/4" />
-                                    <ul className="text-sm w-3/4">
-                                        <li className="font-medium truncate">{product.title}</li>
-                                        <li>Quantity: {product.quantity}</li>
-                                        <li className="text-base font-bold">$ {product.price}</li>
-                                    </ul>
-                                </div>
-                            ))}
-                        </li>
-                        )}
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Cart Subtotal</p>
                             <span className="text-sm">$ {grandTotal.toFixed(2)}</span>
@@ -365,7 +443,7 @@ export default function ProductsPage() {
                         </li>
                         <li className="flex justify-between">
                             <p className="text-xs text-zinc-400">Delivery Charges</p>
-                            <span className="text-sm">Free Delivery</span>
+                            <span className="text-sm text-end">Free Delivery</span>
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li className="flex justify-between">
@@ -376,6 +454,6 @@ export default function ProductsPage() {
                 </section>   
                 }
             </main>
-        </main>
+        </>
     );
 };

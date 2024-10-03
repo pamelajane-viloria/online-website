@@ -10,8 +10,9 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from 'next/navigation';
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
+
 const Header = () => {
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
     const [search, setSearch] = useState<string>('');
@@ -197,15 +198,21 @@ const Header = () => {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56">
                                     <DropdownMenuGroup>
-                                        <DropdownMenuItem>
-                                            Home
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            Products
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem>
-                                            FAQs
-                                        </DropdownMenuItem>
+                                        <Link href="/" legacyBehavior passHref>
+                                            <DropdownMenuItem>
+                                                Home
+                                            </DropdownMenuItem>
+                                        </Link>
+                                        <Link href="/products" legacyBehavior passHref>
+                                            <DropdownMenuItem>
+                                                Products
+                                            </DropdownMenuItem>
+                                        </Link>
+                                        <Link href="/faqs" legacyBehavior passHref>
+                                            <DropdownMenuItem>
+                                                FAQs
+                                            </DropdownMenuItem>
+                                        </Link>
                                     </DropdownMenuGroup>
                                     <DropdownMenuSeparator />
                                     {loggedInUser ? (
@@ -253,7 +260,6 @@ const Header = () => {
                     </div>
                 )}   
             </div>
-
         </div>
     );
 };

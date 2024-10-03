@@ -74,22 +74,22 @@ export default function ProductDetails() {
             {isLoading ? (
                 <Loading />
             ) : (
-            <section className="product-details-section xl:px-24 px-12 mt-4">
+            <section className="product-details-section xl:px-24 lg:px-12 px-5 mt-4">
                 {productData ? (
-                    <div className="flex justify-between gap-24">
-                        <div className="w-1/2 h-[70vh] bg-white p-3 rounded-xl">
+                    <div className="flex flex-col lg:flex-row justify-between lg:gap-24 md:gap-12 gap-6">
+                        <div className="lg:w-1/2 w-full h-[70vh] bg-white p-3 rounded-xl">
                             <img src={productData.image} className="w-full h-full block object-contain object-center" />
                         </div>
-                        <ul className="w-1/2">
-                            <li className="text-3xl font-bold mb-3">{productData.title}</li>
-                            <li className="text-sm mb-3">{productData.description}</li>
-                            <li className="mb-5">
+                        <ul className="lg:w-1/2 flex flex-col">
+                            <li className="text-3xl font-bold mb-3 order-1">{productData.title}</li>
+                            <li className="text-sm mb-3 order-2">{productData.description}</li>
+                            <li className="mb-5 lg:order-3 order-4">
                                 <Rating rate={productData.rating.rate}/>
                                 <span className="text-zinc-500 text-xs ms-1">({productData.rating.count})</span>
                             </li>
-                            <li className="font-bold text-4xl">${productData.price}</li>
-                            <hr className="h-[2px] my-8 bg-gray-200 border-0 dark:bg-gray-700"></hr>
-                            <li className="flex gap-7 items-center">
+                            <li className="font-bold text-4xl mb-5 lg:mb-0 lg:order-4 order-3">${productData.price}</li>
+                            <hr className="h-[2px] my-8 bg-gray-200 border-0 dark:bg-gray-700 hidden lg:flex order-5"></hr>
+                            <li className="flex gap-7 items-center order-6">
                                 <form className="max-w-xs">
                                     <div className="relative flex items-center max-w-[8rem] border border-2 rounded-xl bg-white">
                                         <button type="button" id="decrement-button" onClick={() => handleUpdateQuantity('minus')} data-input-counter-decrement="quantity-input" className="rounded-s-lg p-3 h-11 focus:ring-gray-100">
@@ -118,7 +118,7 @@ export default function ProductDetails() {
                                     <p>Don't miss it</p>
                                 </div>
                             </li>
-                            <li>
+                            <li className="order-7">
                             {loggedInUser ? (
                                 <Button  
                                     className="rounded-lg bg-yellow-500 hover:bg-yellow-600 hover:text-white hover:border-yellow-500 font-bold mt-7 shadow-none w-full py-5"
