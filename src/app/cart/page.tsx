@@ -13,6 +13,25 @@ import PaymentForm from '@/app/cart/components/PaymentForm';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog"
 import Loading from '@/app/components/Loading';
 
+interface PaymentFormData {
+    cardNumber: string;
+    expirationDate: string;
+    cvv: string;
+    name: string;
+};
+
+interface ShippingFormData {
+    firstName: string,
+    lastName: string,
+    email: string,
+    address: string,
+    city: string,
+    state: string,
+    postalCode: string,
+    country: string,
+    phoneNumber: string,
+};
+
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);
     const [productData, setProductData] = useState<any[]>([]);
@@ -21,20 +40,8 @@ export default function ProductsPage() {
     const steps = ["Cart", "Shipping", "Payment", "Confirm"];
     const [currentStep, setCurrentStep] = useState<number>(1);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [shipping, setShipping] = useState<any>(() => {
-        const shippingData = localStorage.getItem('shippingData');
-        if (shippingData) {
-          return JSON.parse(shippingData);
-        }
-        return {};
-    });
-    const [payment, setPayment] = useState<any>(() => {
-        const paymentData = localStorage.getItem('paymentData');
-        if (paymentData) {
-          return JSON.parse(paymentData);
-        }
-        return {};
-    });    
+    const [shipping, setShipping] = useState<ShippingFormData | null>(null);
+    const [payment, setPayment] = useState<PaymentFormData | null>(null);    
 
     // Get all products in cart based on User ID
     useEffect(() => {
@@ -105,15 +112,15 @@ export default function ProductsPage() {
         setCurrentStep(currentStep - 1);
     };
 
-    // Fetch shipping data from localstorage
-    useEffect(() => {
-        setShipping(JSON.parse(localStorage.getItem('shippingData') || '[]'));
-    }, []);
+    const handleShippingFormSubmit = (data:ShippingFormData) => {
+        setShipping(data);
+        handleNextStep();
+    };
 
-    // Fetch payment data from localstorage
-    useEffect(() => {
-        setPayment(JSON.parse(localStorage.getItem('paymentData') || '[]'));
-    }, []); 
+    const handlePaymentFormSubmit = (data:PaymentFormData) => {
+        setPayment(data);
+        handleNextStep();
+    };
 
     return (
         <>
@@ -250,7 +257,7 @@ export default function ProductsPage() {
                         </li>
                         <li>
                             <ShippingAddressForm 
-                                handleNext={handleNextStep}
+                                handleShippingFormSubmit={handleShippingFormSubmit}
                             />
                         </li>
                         <li className="lg:hidden block mt-5">
@@ -313,7 +320,7 @@ export default function ProductsPage() {
                         </li>
                         <li>
                             <PaymentForm 
-                                handleNext={handleNextStep}
+                                handlePaymentFormSubmit={handlePaymentFormSubmit}
                             />
                         </li>
                         <li className="lg:hidden block mt-5">
@@ -377,16 +384,20 @@ export default function ProductsPage() {
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li>
                             <h3 className="font-medium">Shipping</h3>
+                            {shipping && (
                             <div className="text-zinc-500 text-sm">
                                 Shipping to: {shipping.firstName} {shipping.lastName} / {shipping.address} / {shipping.postalCode} / {shipping.phoneNumber}
                             </div>
+                            )}
                         </li>
                         <li><hr className="h-px my-4 bg-zinc-300 border-0" /></li>
                         <li>
                             <h3 className="font-medium">Payment</h3>
+                            {payment && (
                             <div className="text-zinc-500 text-sm">
-                                Shipping to: {payment.cardNumber} / {payment.expirationDate} / {payment.name}
+                                Payment By: {payment.cardNumber} / {payment.expirationDate} / {payment.name}
                             </div>
+                            )}
                         </li>
                         <li className="lg:hidden block mt-5">
                             <ul className="space-y-2">
@@ -418,9 +429,11 @@ export default function ProductsPage() {
                                 <DialogHeader className="items-center justify-center">
                                     <img src="/check-circle.svg" className="size-12" />
                                     <DialogTitle>Thank your for your order</DialogTitle>
+                                    {shipping && (
                                     <DialogDescription>
-                                        The order confirmation has been sent to {shipping.email}
+                                        The order confirmation has been sent to {shipping.email}.
                                     </DialogDescription>
+                                    )}
                                 </DialogHeader>
                                 <Link href="/">
                                     <DialogClose asChild>

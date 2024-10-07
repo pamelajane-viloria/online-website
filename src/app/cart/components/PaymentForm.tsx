@@ -8,10 +8,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 interface paymentProps {
-    handleNext: () => void;
+    // handleNext: () => void;
+	handlePaymentFormSubmit: (data: PaymentFormData) => void;
 };
 
-const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
+interface PaymentFormData {
+	cardNumber: string;
+	expirationDate: string;
+	cvv: string;
+	name: string;
+};
+
+const PaymentForm: FC<paymentProps> = ({ handlePaymentFormSubmit }: paymentProps) => {
 	const formSchema = z.object({
 		cardNumber: z
 			.string()
@@ -46,9 +54,8 @@ const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
 		formState: { errors },
 	} = methods;
 
-	const onSubmit = (data: FormData) => {
-		localStorage.setItem('paymentData', JSON.stringify(data));
-		handleNext();
+	const onSubmit = (data: PaymentFormData) => {
+		handlePaymentFormSubmit(data); // Call the parent's submit function
 	};
   
 

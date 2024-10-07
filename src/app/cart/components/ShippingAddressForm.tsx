@@ -9,10 +9,22 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
 interface shippingProps {
-    handleNext: () => void;
+	handleShippingFormSubmit: (data: ShippingFormData) => void;
 };
 
-const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
+interface ShippingFormData {
+    firstName: string,
+    lastName: string,
+    email: string,
+    address: string,
+    city: string,
+    state: string,
+    postalCode: string,
+    country: string,
+    phoneNumber: string,
+};
+
+const CheckoutForm: FC<shippingProps> = ({ handleShippingFormSubmit }: shippingProps) => {
     const formSchema = z.object({
         firstName: z.string().min(1, "First Name is required"),
         lastName: z.string().min(1, "Last Name is required"),
@@ -37,9 +49,8 @@ const CheckoutForm: FC<shippingProps> = ({ handleNext }: shippingProps) => {
 		formState: { errors },
 	} = methods;
 
-	const onSubmit = (data: FormData) => {
-		localStorage.setItem('shippingData', JSON.stringify(data));
-		handleNext();
+	const onSubmit = (data: ShippingFormData) => {
+		handleShippingFormSubmit(data);
 	};
   
 
