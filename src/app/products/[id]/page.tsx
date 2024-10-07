@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Login from '@/app/components/Login';
+import Back from '@/app/components/Back';
 
 export default function ProductDetails() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -17,13 +18,22 @@ export default function ProductDetails() {
     const [productData, setProductData] = useState<any>(null);
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
     const [quantityCount, setQuantityCount] = useState<number>(1);
+    const router = useRouter();
+
+    // prevent user from typing special characters (especially -)
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (/^\d+$/.test(value) || value === '') {
+            setQuantityCount(Number(value));
+        }
+    };
 
     // increment or decrement quantity value
     const handleUpdateQuantity = (addminus:string) => {
         if (addminus === 'add') {
             setQuantityCount(quantityCount + 1);
         } else if (addminus === 'minus') {
-            setQuantityCount(quantityCount - 1);
+            setQuantityCount(Math.max(quantityCount - 1, 1));
         }
     };
 
@@ -33,8 +43,13 @@ export default function ProductDetails() {
         const fetchProductData = () => {
             axios.get(`https://fakestoreapi.com/products/${productId.id}`)
                 .then(response => {
-                    setProductData(response.data);
-                    setIsLoading(false);
+                    if(!response.data) {
+                        router.push('/');
+                    } else {
+                        setProductData(response.data);
+                        setIsLoading(false);
+
+                    }
                 })
                 .catch(error => {   
                     console.error(error);
@@ -68,6 +83,9 @@ export default function ProductDetails() {
         });
     };
 
+    // 
+
+
     return (
         <main>
             <Header />
@@ -75,6 +93,7 @@ export default function ProductDetails() {
                 <Loading />
             ) : (
             <section className="product-details-section xl:px-24 lg:px-12 px-5 mt-4">
+                <Back />
                 {productData ? (
                     <div className="flex flex-col lg:flex-row justify-between lg:gap-24 md:gap-12 gap-6">
                         <div className="lg:w-1/2 w-full h-[70vh] bg-white p-3 rounded-xl">
@@ -101,7 +120,7 @@ export default function ProductDetails() {
                                             type="text" 
                                             id="quantity-input" 
                                             value={quantityCount}
-                                            onChange={(e) => setQuantityCount(Number(e.target.value))}
+                                            onChange={handleQuantityChange}
                                             data-input-counter 
                                             aria-describedby="helper-text-explanation" 
                                             className="border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm block w-full py-2.5" 

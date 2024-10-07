@@ -4,7 +4,7 @@ import axios from 'axios';
 import { UserContext } from '@/app/contexts/UserContext';
 import Header from '@/app/components/Header';
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
+import { Table, TableBody } from "@/components/ui/table"
 import CartItems from '@/app/cart/components/CartItems';
 import Link from 'next/link';
 import Stepper from '@/app/cart/components/Stepper';
@@ -40,8 +40,8 @@ export default function ProductsPage() {
     useEffect(() => {
         const fetchCardData = () => {
             setIsLoading(true);
-            axios.get(`https://fakestoreapi.com/carts/4`)
-            // axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
+            // axios.get(`https://fakestoreapi.com/carts/4`)
+            axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
                 .then(response => {
                     setCartData(response.data);
                     const products = response.data.products;
@@ -105,12 +105,12 @@ export default function ProductsPage() {
         setCurrentStep(currentStep - 1);
     };
 
-    // Fetch shipping data
+    // Fetch shipping data from localstorage
     useEffect(() => {
         setShipping(JSON.parse(localStorage.getItem('shippingData') || '[]'));
     }, []);
 
-    // Fetch payment data
+    // Fetch payment data from localstorage
     useEffect(() => {
         setPayment(JSON.parse(localStorage.getItem('paymentData') || '[]'));
     }, []); 
@@ -146,7 +146,8 @@ export default function ProductsPage() {
                                         {productData.map((product) => (
                                             <CartItems 
                                                 key={product.id}
-                                                userId={1}
+                                                // userId={1}
+                                                userId={loggedInUser.id}
                                                 id={product.id}
                                                 title={product.title}
                                                 image={product.image}

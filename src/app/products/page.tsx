@@ -14,6 +14,7 @@ export default function ProductsPage() {
     const [productsData, setProductsData] = useState<any[]>([]);
     const [categoriesData, setCategoriesData] = useState<any[]>([]);
     const [sort, setSort] = useState<boolean>(false);
+    const [activeCategory, setActiveCategory] = useState<'all' | string>('all');
     const { selectedCategory } = useContext(CategoryContext);
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
@@ -88,14 +89,15 @@ export default function ProductsPage() {
             url = `https://fakestoreapi.com/products/category/${category}`;
         }
         setIsLoading(true);
+        setActiveCategory(category);
         axios.get(url)
-        .then(response => {
-            setProductsData(response.data);
-            setIsLoading(false);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+            .then(response => {
+                setProductsData(response.data);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     };
 
     // Handle for add to cart on click
@@ -133,7 +135,9 @@ export default function ProductsPage() {
             <section className="products-section xl:px-24 lg:px-12 px-5 my-16">
                 <h2 className="text-3xl font-bold">Products</h2>
                 {isLoading ? (
-                    <Loading />
+                    <div className="h-screen">
+                        <Loading />
+                    </div>
                 ): (
                     <>
                         {categoriesData ? (
@@ -142,7 +146,9 @@ export default function ProductsPage() {
                                     <li>
                                         <Button 
                                             variant="secondary" 
-                                            className="bg-zinc-200 hover:bg-yellow-100 rounded-full shadow-none"
+                                            className={`hover:bg-yellow-100 rounded-full shadow-none ${
+                                                activeCategory === 'all' ? 'bg-yellow-400 text-zinc-900' : 'bg-zinc-200'
+                                              }`}
                                             onClick={() => handleCategoryClick("all")} 
                                         >
                                             All
@@ -152,7 +158,9 @@ export default function ProductsPage() {
                                         <li key={category}>
                                             <Button 
                                                 variant="secondary" 
-                                                className="bg-zinc-200 hover:bg-yellow-100 rounded-full shadow-none"
+                                                className={`hover:bg-yellow-100 rounded-full shadow-none ${
+                                                    activeCategory === category ? 'bg-yellow-400 text-zinc-900' : 'bg-zinc-200'
+                                                  }`}
                                                 onClick={() => handleCategoryClick(category)} 
                                             >
                                                 {category}

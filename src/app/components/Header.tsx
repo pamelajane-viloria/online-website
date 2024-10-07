@@ -11,17 +11,22 @@ import axios from 'axios';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
 
 const Header = () => {
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
     const [search, setSearch] = useState<string>('');
     const [productsData, setProductsData] = useState<any[]>([]);
     const [isInputExpanded, setisInputExpanded] = useState<boolean>(false);
+    const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const router = useRouter();
 
+    // clear search input after hiding
     const handleShowSearchInput = () => {
         !isInputExpanded ? setisInputExpanded(true) : setisInputExpanded(false);
+        setTimeout(() => {
+            handleClearSearch();
+          }, 1000);
     };
 
     // Get all products, default render
@@ -41,7 +46,14 @@ const Header = () => {
     // Handle for log out user
     const handleLogoutUser = () => {
         setLoggedInUser('');
+        localStorage.removeItem("user");
+        localStorage.removeItem("shippingData");
+        localStorage.removeItem("paymentData");
         router.push('/')
+    };
+
+    const handleClearSearch = () => {
+        setSearch("");
     };
 
     return (
@@ -110,7 +122,7 @@ const Header = () => {
                     </NavigationMenuList>
                 </NavigationMenu>
                 <ul className="flex flex-row justify-between items-center gap-5 md:gap-3">
-                    <li className="relative flex justify-end hidden md:block">
+                    <li className="relative flex justify-end hidden md:flex">
                         <motion.div
                             initial={{ width: '0%', opacity: 0 }}
                             animate={{ width: isInputExpanded ? '100%' : '0%', opacity: isInputExpanded ? 1 : 0 }}
@@ -131,7 +143,7 @@ const Header = () => {
                                                 return row;
                                             }})
                                             .map((row, key) => (
-                                                <li key={key} className="">
+                                                <li key={key} onClick={handleClearSearch}>
                                                     <Link href={`/products/${row.id}`} className="block truncate max-w-xs px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
                                                         {row.title}
                                                     </Link>

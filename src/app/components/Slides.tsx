@@ -13,8 +13,8 @@ export default function Slide() {
     const [currentSlide, setCurrentSlide] = useState<number>(0);
     const pictures = [
         {id: 1, title: "Discover the Latest Trends", subtitle: "Explore our newest arrivals in fashion and accessories. Refresh your wardrobe with the latest styles!", url: "/sliderimage1.avif"},
-        {id: 2, title: "Unleash Your Style", subtitle: "Find unique and stylish products that fit your personal flair. Elevate your fashion game with standout pieces from our curated selection.",  url: "sliderimage2.avif"},
-        {id: 3, title: "Timeless Elegance", subtitle: "Shop our collection of classic and sophisticated pieces. Perfect for any occasion, from casual outings to formal events.",  url: "sliderimage3.avif"},
+        {id: 2, title: "Unleash Your Style", subtitle: "Find unique and stylish products that fit your personal flair. Elevate your fashion game with standout pieces from our curated selection.",  url: "/sliderimage2.avif"},
+        {id: 3, title: "Timeless Elegance", subtitle: "Shop our collection of classic and sophisticated pieces. Perfect for any occasion, from casual outings to formal events.",  url: "/sliderimage3.avif"},
     ];
     
 	return (
@@ -23,7 +23,7 @@ export default function Slide() {
                 pagination={true} 
                 modules={[Autoplay, Pagination]} 
                 autoplay={{
-                    delay: 2500,
+                    delay: 4000,
                     disableOnInteraction: false,
                 }}
                 onSlideChange={(swiper) => setCurrentSlide(swiper.realIndex)}

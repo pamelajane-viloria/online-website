@@ -1,7 +1,6 @@
 "use client"
 import React, {  useState, FC, useEffect } from 'react';
 import axios from 'axios';
-import { toast } from "sonner";
 import { TableCell, TableRow, } from "@/components/ui/table";
 
 interface cartItemsProps {
@@ -19,6 +18,17 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
     const [quantityCount, setQuantityCount] = useState<number>(quantity);
     const [totalAmount, setTotalAmount] = useState<number>(quantity*price);
 
+    // prevent user from typing special characters (especially -)
+    const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        if (/^\d+$/.test(value) || value === '') {
+            setQuantityCount(Number(value));
+            setTotalAmount((Number(value)) * price);
+            onUpdateTotal(Number(value));
+        }
+    };
+    
+    // Increase and decrease product quantity on button and calculate total price
     const handleUpdateQuantity = (addminus:string) => {
         if (addminus === 'add') {
             setQuantityCount(quantityCount + 1);
@@ -33,7 +43,6 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
             .then(response => {
                 setTotalAmount((quantityCount + 1) * price);
                 onUpdateTotal(quantityCount + 1);
-                toast(`Quantity updated.`);
             })
             .catch(error => {
                 console.error(error);
@@ -61,9 +70,8 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
                             type="text" 
                             id="quantity-input" 
                             value={quantityCount}
-                            onChange={(e) => setQuantityCount(Number(e.target.value))}
+                            onChange={handleQuantityChange}
                             data-input-counter 
-                            aria-describedby="helper-text-explanation" 
                             className="border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm block w-full py-2.5" 
                         />
                         <button type="button" id="increment-button" onClick={() => handleUpdateQuantity('add')} data-input-counter-increment="quantity-input" className="rounded-e-lg p-3 h-11 focus:ring-gray-100">

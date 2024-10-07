@@ -12,11 +12,26 @@ interface paymentProps {
 };
 
 const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
-    const formSchema = z.object({
-        cardNumber: z.string().min(1, "First Name is required"),
-        expirationDate: z.string().min(1, "Last Name is required"),
-        cvv: z.string().min(4, "Invalid email address"),
-        name: z.string().min(1, "Address is required"),
+	const formSchema = z.object({
+		cardNumber: z
+			.string()
+			.min(16, 'Card number must be at least 16 characters')
+			.max(19, 'Card number cannot exceed 19 characters')
+			.regex(/^\d{16,19}$/, 'Invalid card number format'),
+	  
+		expirationDate: z
+			.string()
+			.regex(/^(0[1-9]|1[0-2])\/([0-9]{2})$/, 'Invalid expiration date format'),
+	  
+		cvv: z
+			.string()
+			.min(3, 'CVV must be at least 3 characters')
+			.max(4, 'CVV cannot exceed 4 characters'),
+	  
+		name: z
+			.string()
+			.min(1, 'Name is required')
+			.regex(/^[A-Za-z\s]+$/, 'Name must contain only letters and spaces'),
 	});
 
 	type FormData = z.infer<typeof formSchema>;
@@ -51,7 +66,7 @@ const PaymentForm: FC<paymentProps> = ({ handleNext }: paymentProps) => {
 					<FormItem className="md:w-2/3 w-full space-y-1">
 						<FormLabel className="font-semibold text-sm">Expiration Date<span className="text-red-500">*</span></FormLabel>
 						<FormControl>
-							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('expirationDate')} placeholder="Expiration date" />
+							<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('expirationDate')} placeholder="MM/YY" />
 						</FormControl>
 						{errors.expirationDate && <span className="text-xs text-red-500">{errors.expirationDate.message}</span>}
 					</FormItem>

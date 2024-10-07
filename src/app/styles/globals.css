@@ -87,3 +87,7 @@
     color: #18181b;
   }
 }
+
+.button-disabled {
+  opacity: 1;
+}
