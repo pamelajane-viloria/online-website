@@ -8,14 +8,15 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         const user = localStorage.getItem('user');
         if (user) {
           return JSON.parse(user);
+        } else {
+            return false;
         }
-        return {};
     });
 
     // Save user data to localStorage whenever it changes
-    useEffect(() => {
-        localStorage.setItem('user', JSON.stringify(loggedInUser));
-    }, [loggedInUser]);
+    // useEffect(() => {
+    //     localStorage.setItem('user', JSON.stringify(loggedInUser));
+    // }, [loggedInUser]);
 
     return (
         <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>

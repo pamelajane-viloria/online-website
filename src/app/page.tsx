@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input";
 import { UserContext } from '@/app/contexts/UserContext';
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Login from "@/app/components/Login";
+import Footer from "@/app/components/Footer";
 
 export default function Home() {
 	const { handleCategoryClick } = useContext(CategoryContext);
@@ -105,18 +106,18 @@ export default function Home() {
 								className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" 
 							/>
 							<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
-							<h3 className="z-10 font-bold text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Electronics</h3>
+							<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Electronics</h3>
 						</div>
 						<div className="grid gap-4 grid-cols-2 sm:grid-cols-2 lg:grid-cols-2">
 							<div onClick={() => handleCategoryClick("men's clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
 								<img src="/men's clothing.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 								<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
-								<h3 className="z-10 font-bold text-nowrap text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Men's Clothing</h3>
+								<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Men's Clothing</h3>
 							</div>
 							<div onClick={() => handleCategoryClick("women's clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
 								<img src="/women's clothing.webp" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 								<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
-								<h3 className="z-10 font-bold text-nowrap text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Women's Clothing</h3>
+								<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Women's Clothing</h3>
 							</div>
 						</div>
 					</div>
@@ -124,7 +125,7 @@ export default function Home() {
 						<div onClick={() => handleCategoryClick("jewelry")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 flex-grow">
 							<img src="/jewelry.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 							<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
-							<h3 className="z-10 font-bold text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase tracking-wider px-3 py-2">Jewelry</h3>
+							<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Jewelry</h3>
 						</div>
 					</div>
 				</div>
@@ -262,10 +263,7 @@ export default function Home() {
 					</li>
 				</ul>
 			</section>
-			<footer className="bg-yellow-100 xl:px-24 lg:px-12 px-5 py-8 flex justify-between items-center">
-				<h4 className="md:text-xl text-base font-bold">Jennie & CO</h4>
-				<p className="text-sm md:text-base">©2024 Jennie & CO All rights reserved.</p>
-			</footer>
+			<Footer />
 		</main>
 	);
 }

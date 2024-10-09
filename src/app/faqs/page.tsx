@@ -2,6 +2,7 @@
 import Header from "@/app/components/Header";
 import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "@/components/ui/accordion";
+import Footer from "@/app/components/Footer";
 
 export default function Faqs() {
     return (
@@ -94,6 +95,7 @@ export default function Faqs() {
                     </li>
                 </ul>
             </section>
+            <Footer />
         </main>
     );
 };

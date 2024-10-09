@@ -8,14 +8,15 @@ import { toast } from "sonner"
 import { CategoryContext } from '@/app/contexts/CategoryContext';
 import ProductCard from '@/app/products/components/ProductCard';
 import { UserContext } from '@/app/contexts/UserContext';
+import Footer from '@/app/components/Footer';
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [productsData, setProductsData] = useState<any[]>([]);
     const [categoriesData, setCategoriesData] = useState<any[]>([]);
     const [sort, setSort] = useState<boolean>(false);
-    const [activeCategory, setActiveCategory] = useState<'all' | string>('all');
     const { selectedCategory } = useContext(CategoryContext);
+    const [activeCategory, setActiveCategory] = useState<'all' | string>(selectedCategory || 'all');
     const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
     // Get all products, default render
@@ -173,7 +174,11 @@ export default function ProductsPage() {
                                             className="rounded-full shadow-none bg-transparent hover:bg-yellow-100 flex md:hidden"
                                             onClick={() => handleSortClick(sort ? 'asc' : 'desc')}
                                         >
-                                            Sort {sort ? '↓' : '↑'}
+                                            Sort {sort ? (
+                                                <img src='/sort-a-to-z.svg' className="size-5"/>
+                                            ) : (
+                                                <img src='/sort-z-to-a.svg' className="size-5"/>
+                                            )}
                                         </Button>
                                     </li>
                                 </ul>
@@ -182,7 +187,11 @@ export default function ProductsPage() {
                                     className="rounded-full shadow-none bg-transparent hover:bg-yellow-100 my-4 hidden md:flex"
                                     onClick={() => handleSortClick(sort ? 'asc' : 'desc')}
                                 >
-                                    Sort {sort ? '↓' : '↑'}
+                                    Sort {sort ? (
+                                        <img src='/sort-a-to-z.svg' className="size-5"/>
+                                    ) : (
+                                        <img src='/sort-z-to-a.svg' className="size-5"/>
+                                    )}
                                 </Button>
                             </div>
                         ) : (
@@ -211,6 +220,7 @@ export default function ProductsPage() {
                     </>
                 )}
             </section>
+            <Footer />
         </div>
     );
 };

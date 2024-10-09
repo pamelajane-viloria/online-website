@@ -12,6 +12,8 @@ import ShippingAddressForm from '@/app/cart/components/ShippingAddressForm';
 import PaymentForm from '@/app/cart/components/PaymentForm';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog"
 import Loading from '@/app/components/Loading';
+import { useRouter } from 'next/navigation';
+import Footer from '@/app/components/Footer';
 
 interface PaymentFormData {
     cardNumber: string;
@@ -42,6 +44,7 @@ export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [shipping, setShipping] = useState<ShippingFormData | null>(null);
     const [payment, setPayment] = useState<PaymentFormData | null>(null);    
+    const router = useRouter();
 
     // Get all products in cart based on User ID
     useEffect(() => {
@@ -78,6 +81,7 @@ export default function ProductsPage() {
                 })
                 .catch(error => {
                     console.error(error);
+                    router.push('/');
                 });
         };
         fetchCardData();
@@ -468,6 +472,7 @@ export default function ProductsPage() {
                 </section>   
                 }
             </main>
+            <Footer />
         </>
     );
 };

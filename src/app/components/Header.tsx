@@ -49,7 +49,8 @@ const Header = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("shippingData");
         localStorage.removeItem("paymentData");
-        router.push('/')
+        localStorage.removeItem("authToken");
+        router.push('/');
     };
 
     const handleClearSearch = () => {
@@ -64,7 +65,7 @@ const Header = () => {
                         <li>
                             <Select defaultValue="EN">
                                 <SelectTrigger className="w-[150px] rounded-none border-0 focus:ring-0 shadow-none text-xs">
-                                    <SelectValue placeholder="EN">English</SelectValue>
+                                    <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="EN" className="text-xs">English</SelectItem>
@@ -76,7 +77,7 @@ const Header = () => {
                         <li>
                             <Select defaultValue="USD">
                                 <SelectTrigger className="w-[150px] rounded-none border-0 focus:ring-0 shadow-none text-xs">
-                                    <SelectValue placeholder="USD">US dollar</SelectValue>
+                                    <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="USD" className="text-xs">US dollar</SelectItem>

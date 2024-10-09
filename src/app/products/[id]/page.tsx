@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Login from '@/app/components/Login';
 import Back from '@/app/components/Back';
+import Footer from '@/app/components/Footer';
 
 export default function ProductDetails() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -169,6 +170,7 @@ export default function ProductDetails() {
                 )}
             </section>
             )}
+            <Footer />
         </main>
     );
 };
