@@ -51,20 +51,17 @@ export default function ProductsPage() {
     // Handler for sorted products
     const handleSortClick = (order:string) => {
         setIsLoading(true);
+        const sortedProducts = [...productsData]; // Copy the products data
         if (order === 'desc') {
+            sortedProducts.sort((a, b) => (a.title > b.title ? -1 : 1));
             setSort(true);
         } else {
+            sortedProducts.sort((a, b) => (a.title < b.title ? -1 : 1));
             setSort(false);
         }
-        axios.get(`https://fakestoreapi.com/products?sort=${order}`)
-            .then(response => {
-                setProductsData(response.data);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
+        setProductsData(sortedProducts);
+        setIsLoading(false);
+    };
 
     // Get all categories
     useEffect(() => {
@@ -123,7 +120,7 @@ export default function ProductsPage() {
         .catch(error => {
             console.error(error);
         });
-    }
+    };
     
     return (
         <div>
