@@ -93,7 +93,7 @@ export default function ProductDetails() {
             {isLoading ? (
                 <Loading />
             ) : (
-            <section className="product-details-section xl:px-24 lg:px-12 px-5 mt-4">
+            <section className="product-details-section xl:px-24 lg:px-12 px-5 mt-4 mb-16">
                 <Back />
                 {productData ? (
                     <div className="flex flex-col lg:flex-row justify-between lg:gap-24 md:gap-12 gap-6">

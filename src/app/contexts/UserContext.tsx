@@ -6,10 +6,10 @@ export const UserContext = createContext<any>(null);
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [loggedInUser, setLoggedInUser] = useState<any>(() => {
         const user = localStorage.getItem('user');
-        if (user) {
-          return JSON.parse(user);
+        if (!user) {
+          return false;
         } else {
-            return false;
+            return JSON.parse(user);
         }
     });
 
