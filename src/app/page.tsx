@@ -122,7 +122,7 @@ export default function Home() {
 						</div>
 					</div>
 					<div className="col-span-2 sm:col-span-1 md:col-span-1 bg-sky-50 h-auto md:h-full flex flex-col">
-						<div onClick={() => handleCategoryClick("jewelry")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 flex-grow">
+						<div onClick={() => handleCategoryClick("jewelery")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40 flex-grow">
 							<img src="/jewelry.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 							<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
 							<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Jewelry</h3>
