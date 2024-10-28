@@ -180,7 +180,7 @@ const Header = () => {
                     {loggedInUser ? (
                         <DropdownMenu>
                             <DropdownMenuTrigger className="py-2 px-4">
-                                <img src="/user.svg" className="size-6" />                            
+                                <img src="/pfp.jpeg" className="size-6 rounded-full" />                            
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
                                 <DropdownMenuItem onClick={handleLogoutUser}>
