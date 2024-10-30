@@ -1,17 +1,32 @@
 "use client"
 import { createContext, useState, ReactNode, useEffect } from 'react';
 import Loading from '@/app/components/Loading';
+import axios from 'axios';
 
 export const UserContext = createContext<any>(null);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [loggedInUser, setLoggedInUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
+    const [itemCount, setItemCount] = useState<number>(0);
 
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (user) {
             setLoggedInUser(JSON.parse(user));
+            const parsedUser = JSON.parse(user);
+
+            // Fetch cart item count if user is logged in
+            // console.log(`https://fakestoreapi.com/carts/${parsedUser.id}`);
+            axios.get(`https://fakestoreapi.com/carts/${parsedUser.id}`)
+                .then((response) => {
+                    // console.log(response.data.products.length);
+                    const count = response.data.products.length;
+                    setItemCount(count);
+                })
+                .catch((error) => {
+                    console.error('Error fetching cart items:', error);
+                });
         }
         setLoading(false);
     }, []);
@@ -21,7 +36,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     }
     
     return (
-        <UserContext.Provider value={{ loggedInUser, setLoggedInUser }}>
+        <UserContext.Provider value={{ loggedInUser, setLoggedInUser, itemCount, setItemCount }}>
             {children}
         </UserContext.Provider>
     );

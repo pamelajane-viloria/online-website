@@ -22,7 +22,7 @@ import Footer from "@/app/components/Footer";
 export default function Home() {
 	const { handleCategoryClick } = useContext(CategoryContext);
     const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-	const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+	const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
 
 	const customerExperience = [
 		{ id: 1, icon: "/new-arrival-everyday.svg", title: "New Arrival Everyday", description: "We update our collection almost everyday" },
@@ -57,6 +57,7 @@ export default function Home() {
                 .then(response => {
                     const productTitle = response.data.title;
                     toast(`Added ${quantity} ${productTitle} to cart.`);
+					setItemCount(itemCount + 1);
                 })
                 .catch(error => {
                     console.error(error);
@@ -68,7 +69,7 @@ export default function Home() {
     }
 
 	return (
-		<main>
+		<main className="mt-32">
 			<Header />
 			<Slides />
 			<section className="customer-experience-container xl:px-24 lg:px-12 px-5 my-16">

@@ -12,9 +12,10 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 const Header = () => {
-    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, itemCount } = useContext(UserContext);
     const [search, setSearch] = useState<string>('');
     const [productsData, setProductsData] = useState<any[]>([]);
     const [isInputExpanded, setisInputExpanded] = useState<boolean>(false);
@@ -58,7 +59,7 @@ const Header = () => {
     };
 
     return (
-        <div className="shadow md:shadow-none bg-white md:bg-transparent">
+        <div className="shadow md:shadow-none bg-white md:bg-zinc-50 fixed z-50 top-0 left-0 right-0 ">
             <header className="bg-yellow-400 hidden lg:block">
                 <div className="flex justify-between xl:px-24 lg:px-12 px-5">
                     <ul className="flex flex-row items-center gap-3">
@@ -99,7 +100,7 @@ const Header = () => {
                 </div>
             </header>
             <nav className="flex flex-row justify-between items-center xl:px-24 lg:px-12 px-5 py-3 relative">
-                <Link href="/">
+                <Link href="/" >
                     <h1 className="hidden md:inline text-xl text-base font-bold">Jennie & CO</h1>
                     <h1 className="inline md:hidden text-xl text-base font-bold">J&CO</h1>
                 </Link>
@@ -162,8 +163,11 @@ const Header = () => {
                     </li>
                     <li>
                         {loggedInUser ? (
-                        <Link href="/cart" className="relative z-[20]">
-                            <img src="/cart.svg" className="size-6" />
+                        <Link href="/cart" className="z-[20]">
+                            <div className="relative">
+                                <img src="/cart.svg" className="size-6" />
+                                <div className="absolute -top-2 -right-2 p-0 size-4 flex justify-center rounded-full bg-red-500 text-xs text-white font-medium">{itemCount}</div>
+                            </div>
                         </Link>
                         ) : (
                         <Dialog>
