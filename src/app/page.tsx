@@ -56,8 +56,16 @@ export default function Home() {
             axios.get(`https://fakestoreapi.com/products/${productId}`)
                 .then(response => {
                     const productTitle = response.data.title;
-                    toast(`Added ${quantity} ${productTitle} to cart.`);
-					setItemCount(itemCount + 1);
+					// const existingItems = JSON.parse(localStorage.getItem('items') || '[]');
+					// const existingProduct = existingItems.find((item: { productId: number }) => item.productId === productId);
+					// if (existingProduct) {
+					// 	existingProduct.quantity += 1;
+					// } else {
+					// 	existingItems.push({ productId, quantity: 1 });
+					// 	setItemCount(itemCount + 1);
+					// }
+					// localStorage.setItem('items', JSON.stringify(existingItems));
+					toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {
                     console.error(error);

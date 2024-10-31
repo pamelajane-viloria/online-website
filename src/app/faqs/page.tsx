@@ -6,7 +6,7 @@ import Footer from "@/app/components/Footer";
 
 export default function Faqs() {
     return (
-        <main>
+        <main className="mt-32">
             <Header />
             <section className="faq-section xl:px-24 lg:px-12 px-5 pb-16 lg:mt-[1rem] mt-10">
                 <h2 className="text-3xl font-bold text-center">Frequent Asked Questions</h2>

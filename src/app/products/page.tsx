@@ -17,7 +17,7 @@ export default function ProductsPage() {
     const [sort, setSort] = useState<boolean>(false);
     const { selectedCategory } = useContext(CategoryContext);
     const [activeCategory, setActiveCategory] = useState<'all' | string>(selectedCategory || 'all');
-    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
 
     // Get all products, default render
     useEffect(() => {
@@ -111,6 +111,15 @@ export default function ProductsPage() {
             axios.get(`https://fakestoreapi.com/products/${productId}`)
                 .then(response => {
                     const productTitle = response.data.title;
+                    // const existingItems = JSON.parse(localStorage.getItem('items') || '[]');
+					// const existingProduct = existingItems.find((item: { productId: number }) => item.productId === productId);
+					// if (existingProduct) {
+					// 	existingProduct.quantity += 1;
+					// } else {
+					// 	existingItems.push({ productId, quantity: 1 });
+					// 	setItemCount(itemCount + 1);
+					// }
+					// localStorage.setItem('items', JSON.stringify(existingItems));
                     toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {
@@ -123,7 +132,7 @@ export default function ProductsPage() {
     };
     
     return (
-        <div>
+        <div className="mt-32">
             <Header />
             <section className="heading-section xl:px-24 lg:px-12 md:px-5 z-1 md:mt-4">
                 <div className="bg-zinc-900 w-full h-[70vh] md:rounded-2xl">

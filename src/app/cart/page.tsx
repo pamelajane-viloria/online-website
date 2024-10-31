@@ -129,7 +129,7 @@ export default function ProductsPage() {
     return (
         <>
             <Header />
-            <main className="cart-section xl:px-24 lg:px-12 px-5 mt-4">
+            <main className="cart-section xl:px-24 lg:px-12 px-5 mt-32">
                 <Stepper
                     steps={steps}
                     currentStep={currentStep}

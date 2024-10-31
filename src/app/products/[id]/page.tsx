@@ -17,7 +17,7 @@ export default function ProductDetails() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const productId = useParams();
     const [productData, setProductData] = useState<any>(null);
-    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
     const [quantityCount, setQuantityCount] = useState<number>(1);
     const router = useRouter();
 
@@ -73,6 +73,9 @@ export default function ProductDetails() {
             axios.get(`https://fakestoreapi.com/products/${productId}`)
                 .then(response => {
                     const productTitle = response.data.title;
+
+                    
+
                     toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {
@@ -84,11 +87,8 @@ export default function ProductDetails() {
         });
     };
 
-    // 
-
-
     return (
-        <main>
+        <main className="mt-32">
             <Header />
             {isLoading ? (
                 <Loading />
