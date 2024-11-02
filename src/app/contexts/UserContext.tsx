@@ -9,27 +9,16 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     const [loggedInUser, setLoggedInUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [itemCount, setItemCount] = useState<number>(0);
-
+    
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (user) {
             setLoggedInUser(JSON.parse(user));
             const parsedUser = JSON.parse(user);
-
-
-
-            // save cart items to localstorage
-
-
-
-            
             // Fetch cart item count if user is logged in
-            // console.log(`https://fakestoreapi.com/carts/${parsedUser.id}`);
             axios.get(`https://fakestoreapi.com/carts/${parsedUser.id}`)
                 .then((response) => {
-                    // console.log(response.data.products.length);
-                    const count = response.data.products.length;
-                    setItemCount(count);
+                    setItemCount(response.data.products.length);
                 })
                 .catch((error) => {
                     console.error('Error fetching cart items:', error);

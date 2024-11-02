@@ -12,7 +12,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
+import { CategoryContext } from '@/app/contexts/CategoryContext';
 
 const Header = () => {
     const { loggedInUser, setLoggedInUser, itemCount } = useContext(UserContext);
@@ -20,6 +20,7 @@ const Header = () => {
     const [productsData, setProductsData] = useState<any[]>([]);
     const [isInputExpanded, setisInputExpanded] = useState<boolean>(false);
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
+    const { selectedCategory, setSelectedCategory, handleCategoryClick } = useContext(CategoryContext);
     const router = useRouter();
 
     // clear search input after hiding
@@ -51,6 +52,7 @@ const Header = () => {
         localStorage.removeItem("shippingData");
         localStorage.removeItem("paymentData");
         localStorage.removeItem("authToken");
+        localStorage.removeItem("cartItems");
         router.push('/');
     };
 
@@ -58,8 +60,12 @@ const Header = () => {
         setSearch("");
     };
 
+    const clearCategory = () => {
+        router.push('/products');
+    }
+
     return (
-        <div className="shadow md:shadow-none bg-white md:bg-zinc-50 fixed z-50 top-0 left-0 right-0 ">
+        <div className="shadow md:shadow-none bg-white md:bg-zinc-50 fixed z-50 top-0 left-0 right-0">
             <header className="bg-yellow-400 hidden lg:block">
                 <div className="flex justify-between xl:px-24 lg:px-12 px-5">
                     <ul className="flex flex-row items-center gap-3">
@@ -111,11 +117,16 @@ const Header = () => {
                                 <NavigationMenuLink className="font-medium text-sm">Home</NavigationMenuLink>
                             </NavigationMenuItem>
                         </Link>
-                        <Link href="/products" legacyBehavior passHref>
+                        <Button onClick={() => handleCategoryClick("")} className="bg-transparent shadow-none text-dark hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
                             <NavigationMenuItem className="hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
                                 <NavigationMenuLink className="font-medium text-sm px-3">Shop</NavigationMenuLink>
                             </NavigationMenuItem>
-                        </Link>
+                        </Button>
+                        {/* <Link href="/products" legacyBehavior passHref>
+                            <NavigationMenuItem className="hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
+                                <NavigationMenuLink className="font-medium text-sm">Products</NavigationMenuLink>
+                            </NavigationMenuItem>
+                        </Link> */}
                         <Link href="/faqs" legacyBehavior passHref>
                             <NavigationMenuItem className="hover:bg-zinc-200 cursor-pointer rounded-md w-max py-2 px-3">
                                 <NavigationMenuLink className="font-medium text-sm px-3">FAQs</NavigationMenuLink>

@@ -37,7 +37,7 @@ interface ShippingFormData {
 export default function ProductsPage() {
     const [cartData, setCartData] = useState<any[]>([]);
     const [productData, setProductData] = useState<any[]>([]);
-    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
     const [grandTotal, setGrandTotal] = useState<number>(0);
     const steps = ["Cart", "Shipping", "Payment", "Confirm"];
     const [currentStep, setCurrentStep] = useState<number>(1);
@@ -47,43 +47,74 @@ export default function ProductsPage() {
     const router = useRouter();
 
     // Get all products in cart based on User ID
-    useEffect(() => {
-        const fetchCardData = () => {
-            setIsLoading(true);
-            // axios.get(`https://fakestoreapi.com/carts/4`)
-            axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
-                .then(response => {
-                    setCartData(response.data);
-                    const products = response.data.products;
-                    // Start of product details promise
-                    const productDetailsPromise = products.map((product: { productId: number; quantity: number }) => {
-                        return axios.get(`https://fakestoreapi.com/products/${product.productId}`)
-                            .then(response => ({
-                                ...response.data,
-                                quantity: product.quantity
-                            }));
-                    });
+    
+    const fetchCardData = () => {
+        setIsLoading(true);
+        const savedCartItems = localStorage.getItem("cartItems");
+        if(savedCartItems) {
+            const products = JSON.parse(savedCartItems);
+            // Get product details from stored data
+            const productDetails = products.map((product: { productId: number; quantity: number }) => {
+                return axios.get(`https://fakestoreapi.com/products/${product.productId}`)
+                        .then(response => ({
+                            ...response.data,
+                            quantity: product.quantity
+                        }));
+            });
 
-                    Promise.all(productDetailsPromise)
-                        .then(productData => {
-                            setProductData(productData);
-                            const initialTotal = productData.reduce((sum, product) => {
-                                return sum + product.price * product.quantity;
-                            }, 0);
-                            setGrandTotal(initialTotal);
-                            setIsLoading(false);
-                        })
-                        .catch(error => {
-                            console.error(error);
-                    });
-                    // End of promise
-
-                })
-                .catch(error => {
-                    console.error(error);
-                    router.push('/');
+            Promise.all(productDetails)
+                    .then(productData => {
+                        setProductData(productData);
+                        const initialTotal = productData.reduce((sum, product) => {
+                            return sum + product.price * product.quantity;
+                        }, 0);
+                        setGrandTotal(initialTotal);
+                        setIsLoading(false);
+                    })
+                    .catch(error => {
+                        console.error(error);
                 });
-        };
+        } else {
+            console.log("No cart items found in local storage.");
+            setIsLoading(false);
+        }
+
+        // axios.get(`https://fakestoreapi.com/carts/4`)
+        // axios.get(`https://fakestoreapi.com/carts/${loggedInUser.id}`)
+        //     .then(response => {
+        //         setCartData(response.data);
+        //         const products = response.data.products;
+        //         // Start of product details promise
+        //         const productDetailsPromise = products.map((product: { productId: number; quantity: number }) => {
+        //             return axios.get(`https://fakestoreapi.com/products/${product.productId}`)
+        //                 .then(response => ({
+        //                     ...response.data,
+        //                     quantity: product.quantity
+        //                 }));
+        //         });
+
+        //         Promise.all(productDetailsPromise)
+        //             .then(productData => {
+        //                 setProductData(productData);
+        //                 const initialTotal = productData.reduce((sum, product) => {
+        //                     return sum + product.price * product.quantity;
+        //                 }, 0);
+        //                 setGrandTotal(initialTotal);
+        //                 setIsLoading(false);
+        //             })
+        //             .catch(error => {
+        //                 console.error(error);
+        //         });
+        //         // End of promise
+
+            // })
+            // .catch(error => {
+            //     console.error(error);
+            //     router.push('/');
+            // });
+    };
+
+    useEffect(() => {
         fetchCardData();
     }, []);
 
@@ -97,6 +128,8 @@ export default function ProductsPage() {
 
     // Handle delete items in cart
     const handleClearCart = () => {
+        localStorage.removeItem("cartItems");
+        setItemCount(0);
         axios.delete('https://fakestoreapi.com/carts/3')
             .then(response => {
                 setProductData(response.data);
@@ -124,6 +157,15 @@ export default function ProductsPage() {
     const handlePaymentFormSubmit = (data:PaymentFormData) => {
         setPayment(data);
         handleNextStep();
+    };
+
+    const handleDeleteItem = (productId:number) => {
+        // delete individual item from localstorage
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const updatedCartItems = cartItems.filter((item: { productId: number }) => item.productId !== productId);
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        fetchCardData();
+        setItemCount(updatedCartItems.length);
     };
 
     return (
@@ -166,6 +208,7 @@ export default function ProductsPage() {
                                                 price={product.price}
                                                 quantity={product.quantity}
                                                 onUpdateTotal={calculateGrandTotal}
+                                                handleDeleteItem={handleDeleteItem}
                                             />
                                         ))}
                                     </TableBody>

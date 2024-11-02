@@ -12,9 +12,10 @@ interface cartItemsProps {
     price:number,
     quantity:number,
     onUpdateTotal: (newQuantity:number) => void;
+    handleDeleteItem: (id:number) => void;
 }
 
-const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, price, quantity, onUpdateTotal }: cartItemsProps) => {
+const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, price, quantity, onUpdateTotal, handleDeleteItem }: cartItemsProps) => {
     const [quantityCount, setQuantityCount] = useState<number>(quantity);
     const [totalAmount, setTotalAmount] = useState<number>(quantity*price);
 
@@ -107,6 +108,11 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
                         </button>
                     </div>
                 </form>    
+            </TableCell>
+            <TableCell>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 text-red-500 hover:bg-red-100 p-1 rounded-lg" onClick={() => handleDeleteItem(id)}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
             </TableCell>
         </TableRow>
     );

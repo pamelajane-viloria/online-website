@@ -9,6 +9,7 @@ import { CategoryContext } from '@/app/contexts/CategoryContext';
 import ProductCard from '@/app/products/components/ProductCard';
 import { UserContext } from '@/app/contexts/UserContext';
 import Footer from '@/app/components/Footer';
+import { useRouter } from 'next/navigation';
 
 export default function ProductsPage() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export default function ProductsPage() {
     const { selectedCategory } = useContext(CategoryContext);
     const [activeCategory, setActiveCategory] = useState<'all' | string>(selectedCategory || 'all');
     const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
+    const router = useRouter();
 
     // Get all products, default render
     useEffect(() => {
@@ -111,15 +113,15 @@ export default function ProductsPage() {
             axios.get(`https://fakestoreapi.com/products/${productId}`)
                 .then(response => {
                     const productTitle = response.data.title;
-                    // const existingItems = JSON.parse(localStorage.getItem('items') || '[]');
-					// const existingProduct = existingItems.find((item: { productId: number }) => item.productId === productId);
-					// if (existingProduct) {
-					// 	existingProduct.quantity += 1;
-					// } else {
-					// 	existingItems.push({ productId, quantity: 1 });
-					// 	setItemCount(itemCount + 1);
-					// }
-					// localStorage.setItem('items', JSON.stringify(existingItems));
+                    const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+					const existingProduct = cartItems.find((item: { productId: number }) => item.productId === productId);
+					if (existingProduct) {
+						existingProduct.quantity += 1;
+					} else {
+						cartItems.push({ productId, quantity: 1 });
+						setItemCount(itemCount + 1);
+					}
+					localStorage.setItem('cartItems', JSON.stringify(cartItems));
                     toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {

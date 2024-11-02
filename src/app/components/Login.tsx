@@ -36,6 +36,10 @@ export default function Login() {
                             localStorage.setItem('user', JSON.stringify({ id: user.id, username: user.username, token: localStorage.getItem('authToken') }));
                             setIsLoading(false);
                             setIsDialogOpen(false);
+                            axios.get(`https://fakestoreapi.com/carts/${user.id}`)
+                                .then((response) => {
+                                    localStorage.setItem('cartItems', JSON.stringify(response.data.products));
+                                });
                         } else {
                             setIsLoading(false);
                             setError("Invalid username or password");
