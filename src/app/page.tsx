@@ -22,7 +22,7 @@ import Footer from "@/app/components/Footer";
 export default function Home() {
 	const { handleCategoryClick } = useContext(CategoryContext);
     const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
-	const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
+	const { loggedInUser, getCartItemCount } = useContext(UserContext);
 
 	const customerExperience = [
 		{ id: 1, icon: "/new-arrival-everyday.svg", title: "New Arrival Everyday", description: "We update our collection almost everyday" },
@@ -62,9 +62,9 @@ export default function Home() {
 						existingProduct.quantity += 1;
 					} else {
 						cartItems.push({ productId, quantity: 1 });
-						setItemCount(itemCount + 1);
 					}
 					localStorage.setItem('cartItems', JSON.stringify(cartItems));
+					getCartItemCount();
 					toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {

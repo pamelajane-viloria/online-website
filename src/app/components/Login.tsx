@@ -13,7 +13,7 @@ export default function Login() {
     const [error, setError] = useState<any>('');
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
-    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, getCartItemCount } = useContext(UserContext);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const handleLoginUser = () => {
@@ -39,6 +39,7 @@ export default function Login() {
                             axios.get(`https://fakestoreapi.com/carts/${user.id}`)
                                 .then((response) => {
                                     localStorage.setItem('cartItems', JSON.stringify(response.data.products));
+                                    getCartItemCount();
                                 });
                         } else {
                             setIsLoading(false);

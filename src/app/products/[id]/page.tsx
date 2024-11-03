@@ -17,7 +17,7 @@ export default function ProductDetails() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const productId = useParams();
     const [productData, setProductData] = useState<any>(null);
-    const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, itemCount, setItemCount, getCartItemCount } = useContext(UserContext);
     const [quantityCount, setQuantityCount] = useState<number>(1);
     const router = useRouter();
 
@@ -64,6 +64,15 @@ export default function ProductDetails() {
 
     // Handle for add to cart on click
     const handleAddToCartClick = (productId:number, quantity:number) => {
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const existingProduct = cartItems.find((item: { productId: number }) => item.productId === productId);
+        if (existingProduct) {
+            existingProduct.quantity += quantity;
+        } else {
+            cartItems.push({ productId, quantity: quantity });
+        }
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        getCartItemCount();
         axios.post('https://fakestoreapi.com/carts',{
             userId:loggedInUser.id,
             date:new Date().toISOString(),
@@ -73,15 +82,6 @@ export default function ProductDetails() {
             axios.get(`https://fakestoreapi.com/products/${productId}`)
                 .then(response => {
                     const productTitle = response.data.title;
-                    const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-					const existingProduct = cartItems.find((item: { productId: number }) => item.productId === productId);
-					if (existingProduct) {
-						existingProduct.quantity += quantity;
-					} else {
-						cartItems.push({ productId, quantity: quantity });
-						setItemCount(itemCount + 1);
-					}
-					localStorage.setItem('cartItems', JSON.stringify(cartItems));
                     toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {
@@ -97,7 +97,9 @@ export default function ProductDetails() {
         <main className="mt-32">
             <Header />
             {isLoading ? (
-                <Loading />
+                <div className="h-screen">
+                    <Loading />
+                </div>
             ) : (
             <section className="product-details-section xl:px-24 lg:px-12 px-5 mt-4 mb-16">
                 <Back />

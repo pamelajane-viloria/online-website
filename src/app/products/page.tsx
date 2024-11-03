@@ -16,9 +16,9 @@ export default function ProductsPage() {
     const [productsData, setProductsData] = useState<any[]>([]);
     const [categoriesData, setCategoriesData] = useState<any[]>([]);
     const [sort, setSort] = useState<boolean>(false);
-    const { selectedCategory } = useContext(CategoryContext);
-    const [activeCategory, setActiveCategory] = useState<'all' | string>(selectedCategory || 'all');
-    const { loggedInUser, setLoggedInUser, itemCount, setItemCount } = useContext(UserContext);
+    const { selectedCategory, activeCategory, setActiveCategory } = useContext(CategoryContext);
+    // const [activeCategory, setActiveCategory] = useState<'all' | string>(selectedCategory || 'all');
+    const { loggedInUser, setLoggedInUser, itemCount, setItemCount, getCartItemCount } = useContext(UserContext);
     const router = useRouter();
 
     // Get all products, default render
@@ -88,6 +88,7 @@ export default function ProductsPage() {
         } else {
             url = `https://fakestoreapi.com/products/category/${category}`;
         }
+        console.log(category);
         setIsLoading(true);
         setActiveCategory(category);
         axios.get(url)
@@ -119,9 +120,9 @@ export default function ProductsPage() {
 						existingProduct.quantity += 1;
 					} else {
 						cartItems.push({ productId, quantity: 1 });
-						setItemCount(itemCount + 1);
 					}
 					localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    getCartItemCount();
                     toast(`Added ${quantity} ${productTitle} to cart.`);
                 })
                 .catch(error => {

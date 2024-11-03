@@ -13,26 +13,34 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const user = localStorage.getItem('user');
         if (user) {
+            setLoading(true);
             setLoggedInUser(JSON.parse(user));
-            const parsedUser = JSON.parse(user);
-            // Fetch cart item count if user is logged in
-            axios.get(`https://fakestoreapi.com/carts/${parsedUser.id}`)
-                .then((response) => {
-                    setItemCount(response.data.products.length);
-                })
-                .catch((error) => {
-                    console.error('Error fetching cart items:', error);
-                });
+            // const parsedUser = JSON.parse(user);
+            // // Fetch cart item count if user is logged in
+            // axios.get(`https://fakestoreapi.com/carts/${parsedUser.id}`)
+            //     .then((response) => {
+            //         setItemCount(response.data.products.length);
+            //     })
+            //     .catch((error) => {
+            //         console.error('Error fetching cart items:', error);
+            //     });
         }
         setLoading(false);
     }, []);
+
+    const getCartItemCount = () => {
+        const cartItems = localStorage.getItem('cartItems');
+        if (cartItems) {
+            setItemCount(JSON.parse(cartItems).length);
+        }
+    };
 
     if (loading) {
         return <div className="py-16"><Loading/></div>;
     }
     
     return (
-        <UserContext.Provider value={{ loggedInUser, setLoggedInUser, itemCount, setItemCount }}>
+        <UserContext.Provider value={{ loggedInUser, setLoggedInUser, itemCount, setItemCount, getCartItemCount }}>
             {children}
         </UserContext.Provider>
     );

@@ -17,7 +17,7 @@ interface cartItemsProps {
 
 const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, price, quantity, onUpdateTotal, handleDeleteItem }: cartItemsProps) => {
     const [quantityCount, setQuantityCount] = useState<number>(quantity);
-    const [totalAmount, setTotalAmount] = useState<number>(quantity*price);
+    const [totalAmount, setTotalAmount] = useState<number>(quantity * price);
 
     // prevent user from typing special characters (especially -)
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,19 +31,40 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
     
     // Increase and decrease product quantity on button and calculate total price
     const handleUpdateQuantity = (addminus:string) => {
-        if (addminus === 'add') {
-            setQuantityCount(quantityCount + 1);
-        } else if (addminus === 'minus') {
-            setQuantityCount(Math.max(quantityCount - 1, 1)); 
+        // const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+		// const existingProduct = cartItems.find((item: { productId: number }) => item.productId === id);
+        // if (addminus === 'add') {
+        //     setQuantityCount(quantityCount + 1);
+        //     existingProduct.quantity += 1;
+        //     setTotalAmount((quantityCount + 1) * price);
+        //     onUpdateTotal(quantityCount + 1);
+        // } else if (addminus === 'minus') {
+        //     setQuantityCount(Math.max(quantityCount - 1, 1)); 
+        //     existingProduct.quantity -= 1;
+        //     setTotalAmount((quantityCount - 1) * price);
+        //     onUpdateTotal(quantityCount - 1);
+        // }
+        // localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const existingProduct = cartItems.find((item: { productId: number }) => item.productId === id);
+
+        if (existingProduct) {
+            const newQuantity = addminus === 'add' ? quantityCount + 1 : Math.max(quantityCount - 1, 1);
+            setQuantityCount(newQuantity);
+            existingProduct.quantity = newQuantity;
+
+            const updatedTotal = newQuantity * price;
+            setTotalAmount(updatedTotal);
+            onUpdateTotal(newQuantity);
+
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
         }
+        
         axios.put(`https://fakestoreapi.com/carts/${userId}`,{
                 userId: userId,
                 date:new Date().toISOString(),
                 products:{productId:id,quantity:quantityCount}
-            })
-            .then(response => {
-                setTotalAmount((quantityCount + 1) * price);
-                onUpdateTotal(quantityCount + 1);
             })
             .catch(error => {
                 console.error(error);

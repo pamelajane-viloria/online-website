@@ -20,7 +20,8 @@ const Header = () => {
     const [productsData, setProductsData] = useState<any[]>([]);
     const [isInputExpanded, setisInputExpanded] = useState<boolean>(false);
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
-    const { selectedCategory, setSelectedCategory, handleCategoryClick } = useContext(CategoryContext);
+    // const [itemCount, setItemCount] = useState<number>(0);
+    const { handleCategoryClick } = useContext(CategoryContext);
     const router = useRouter();
 
     // clear search input after hiding
@@ -58,10 +59,6 @@ const Header = () => {
 
     const handleClearSearch = () => {
         setSearch("");
-    };
-
-    const clearCategory = () => {
-        router.push('/products');
     }
 
     return (
