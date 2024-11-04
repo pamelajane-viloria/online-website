@@ -15,7 +15,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { CategoryContext } from '@/app/contexts/CategoryContext';
 
 const Header = () => {
-    const { loggedInUser, setLoggedInUser, itemCount } = useContext(UserContext);
+    const { loggedInUser, setLoggedInUser, itemCount, getCartItemCount } = useContext(UserContext);
     const [search, setSearch] = useState<string>('');
     const [productsData, setProductsData] = useState<any[]>([]);
     const [isInputExpanded, setisInputExpanded] = useState<boolean>(false);
@@ -23,6 +23,8 @@ const Header = () => {
     // const [itemCount, setItemCount] = useState<number>(0);
     const { handleCategoryClick } = useContext(CategoryContext);
     const router = useRouter();
+
+    getCartItemCount();
 
     // clear search input after hiding
     const handleShowSearchInput = () => {

@@ -11,8 +11,10 @@ export const CategoryProvider = ({ children }: { children: ReactNode }) => {
 
     const handleCategoryClick = (category:string) => {
 		setSelectedCategory(category);
-        if(!category) {
+        if(category.length == 0) {
             setActiveCategory("all");
+        } else {
+            setActiveCategory(category);
         }
 		router.push('/products');
 	};

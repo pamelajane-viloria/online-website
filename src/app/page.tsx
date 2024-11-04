@@ -74,7 +74,7 @@ export default function Home() {
         .catch(error => {
             console.error(error);
         });
-    }
+    };
 
 	return (
 		<main className="mt-32">
