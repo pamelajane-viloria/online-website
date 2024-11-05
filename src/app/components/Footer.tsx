@@ -1,4 +1,4 @@
-'use client'
+"use client"
 export default function Footer() {
     return (
         <footer className="bg-yellow-100 xl:px-24 lg:px-12 px-5 py-8 flex justify-between items-center">

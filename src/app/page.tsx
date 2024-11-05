@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Header from "@/app/components/Header";
 import React, { useContext, useState, useEffect } from 'react';
 import Slides from '@/app/components/Slides';

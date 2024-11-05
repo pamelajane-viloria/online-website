@@ -1,6 +1,6 @@
-'use client'
+"use client"
 import Header from "@/app/components/Header";
-import React from 'react';
+import React from "react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "@/components/ui/accordion";
 import Footer from "@/app/components/Footer";
 
