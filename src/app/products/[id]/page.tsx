@@ -1,17 +1,17 @@
 "use client"
-import { useEffect, useState, useContext } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import axios from 'axios';
-import Loading from '@/app/components/Loading';
-import Header from '@/app/components/Header';
-import Rating from '@/app/components/Rating';
-import { UserContext } from '@/app/contexts/UserContext';
+import { useEffect, useState, useContext } from "react";
+import { useParams, useRouter } from "next/navigation";
+import axios from "axios";
+import Loading from "@/app/components/Loading";
+import Header from "@/app/components/Header";
+import Rating from "@/app/components/Rating";
+import { UserContext } from "@/app/contexts/UserContext";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import Login from '@/app/components/Login';
-import Back from '@/app/components/Back';
-import Footer from '@/app/components/Footer';
+import Login from "@/app/components/Login";
+import Back from "@/app/components/Back";
+import Footer from "@/app/components/Footer";
 
 export default function ProductDetails() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -143,7 +143,7 @@ export default function ProductDetails() {
                                 </form>
                                 <div className="text-xs">
                                     <p>Only <span className="text-red-500 font-medium">12 items</span> left!</p>
-                                    <p>Don't miss it</p>
+                                    <p>Don&apos;t miss it</p>
                                 </div>
                             </li>
                             <li className="order-7">

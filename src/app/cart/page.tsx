@@ -1,20 +1,20 @@
 "use client"
-import { useState, useEffect, useContext, } from 'react';
-import axios from 'axios';
-import { UserContext } from '@/app/contexts/UserContext';
-import Header from '@/app/components/Header';
+import { useState, useEffect, useContext, } from "react";
+import axios from "axios";
+import { UserContext } from "@/app/contexts/UserContext";
+import Header from "@/app/components/Header";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody } from "@/components/ui/table"
-import CartItems from '@/app/cart/components/CartItems';
-import Link from 'next/link';
-import Stepper from '@/app/cart/components/Stepper';
-import ShippingAddressForm from '@/app/cart/components/ShippingAddressForm';
-import PaymentForm from '@/app/cart/components/PaymentForm';
+import CartItems from "@/app/cart/components/CartItems";
+import Link from "next/link";
+import Stepper from "@/app/cart/components/Stepper";
+import ShippingAddressForm from "@/app/cart/components/ShippingAddressForm";
+import PaymentForm from "@/app/cart/components/PaymentForm";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, } from "@/components/ui/dialog"
-import Loading from '@/app/components/Loading';
-import { useRouter } from 'next/navigation';
-import Footer from '@/app/components/Footer';
-import { CategoryContext } from '@/app/contexts/CategoryContext';
+import Loading from "@/app/components/Loading";
+import { useRouter } from "next/navigation";
+import Footer from "@/app/components/Footer";
+import { CategoryContext } from "@/app/contexts/CategoryContext";
 
 interface PaymentFormData {
     cardNumber: string;
@@ -131,7 +131,7 @@ export default function ProductsPage() {
     const handleClearCart = () => {
         localStorage.removeItem("cartItems");
         setItemCount(0);
-        axios.delete('https://fakestoreapi.com/carts/3')
+        axios.delete("https://fakestoreapi.com/carts/3")
             .then(response => {
                 setProductData(response.data);
             })
@@ -162,9 +162,9 @@ export default function ProductsPage() {
 
     // delete individual item from localstorage
     const handleDeleteItem = (productId:number) => {
-        const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+        const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
         const updatedCartItems = cartItems.filter((item: { productId: number }) => item.productId !== productId);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
         fetchCardData();
         getCartItemCount();
     };
@@ -182,7 +182,7 @@ export default function ProductsPage() {
                     <ul className="rounded-xl lg:w-3/4 w-full border-zinc-200 bg-white py-5 md:px-7 px-4 shadow-xl">
                         <li className="flex justify-between">
                             <h2 className="font-semibold text-lg">Cart</h2>
-                            {productData.length < 0 ? (
+                            {productData.length > 0 ? (
                                 <Button className="bg-transparent hover:bg-red-50 shadow-none text-xs text-red-500" onClick={handleClearCart}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-4 me-2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -222,7 +222,7 @@ export default function ProductsPage() {
                                 <div className="text-center my-4 w-full text-zinc-400">
                                     <img src="/empty-cart.svg" className="size-10 mx-auto mb-4" />
                                     <h3 className="font-bold text-xl mb-1">Your Cart is empty :^(</h3>
-                                    <p className="text-base mb-7">Looks like you haven't added anything to your cart yet</p>
+                                    <p className="text-base mb-7">Looks like you haven&apos;t added anything to your cart yet</p>
                                     <Button onClick={() => handleCategoryClick("")} className="bg-yellow-400 hover:bg-yellow-500 text-white font-semibold px-5 py-3 rounded-lg mt-3">Start Shopping</Button>
                                 </div>
                             )}

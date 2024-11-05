@@ -1,20 +1,20 @@
 "use client"
 import Header from "@/app/components/Header";
-import React, { useContext, useState, useEffect } from 'react';
-import Slides from '@/app/components/Slides';
-import Link from 'next/link';
+import React, { useContext, useState, useEffect } from "react";
+import Slides from "@/app/components/Slides";
+import Link from "next/link";
 import { CategoryContext } from "@/app/contexts/CategoryContext";
-import axios from 'axios';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import './styles/slides.css';
-import 'swiper/css';
-import { Navigation } from 'swiper/modules';
+import axios from "axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "./styles/slides.css";
+import "swiper/css";
+import { Navigation } from "swiper/modules";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Rating from "@/app/components/Rating";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { UserContext } from '@/app/contexts/UserContext';
+import { UserContext } from "@/app/contexts/UserContext";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Login from "@/app/components/Login";
 import Footer from "@/app/components/Footer";
@@ -28,7 +28,7 @@ export default function Home() {
 		{ id: 1, icon: "/new-arrival-everyday.svg", title: "New Arrival Everyday", description: "We update our collection almost everyday" },
 		{ id: 2, icon: "/all-year-discount.svg", title: "All Year Deals", description: "Enjoy exclusive deals and promos" },
 		{ id: 3, icon: "/fast-shipping.svg", title: "Fast & Free Shipping", description: "We offer fast and free shipping to our loyal customers" },
-		{ id: 4, icon: "/satisfaction-guarantee.svg", title: "Satisfaction Guarantee", description: "Exchange the product you've purchased if it doesn't fit you" },
+		{ id: 4, icon: "/satisfaction-guarantee.svg", title: "Satisfaction Guarantee", description: "Exchange the product you\'ve purchased if it doesn\'t fit you" },
 	];
 
 	useEffect(() => {
@@ -121,12 +121,12 @@ export default function Home() {
 							<div onClick={() => handleCategoryClick("men's clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
 								<img src="/men's clothing.jpeg" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 								<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
-								<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Men's Clothing</h3>
+								<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Men&apos;s Clothing</h3>
 							</div>
-							<div onClick={() => handleCategoryClick("women's clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
+							<div onClick={() => handleCategoryClick("women&apos;s clothing")} className="cursor-pointer group relative flex flex-col overflow-hidden rounded-2xl px-4 pb-4 pt-40">
 								<img src="/women's clothing.webp" alt="" className="absolute inset-0 h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-in-out" />
 								<div className="absolute inset-0 bg-gradient-to-br from-zinc-800/50 to-gray-900/10"></div>
-								<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Women's Clothing</h3>
+								<h3 className="z-10 xl:font-bold font-medium lg:text-nowrap md:text-wrap text-nowrap xl:text-lg text-sm text-white absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 bg-yellow-400 rounded-full uppercase px-3 py-2">Women&apos;s Clothing</h3>
 							</div>
 						</div>
 					</div>

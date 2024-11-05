@@ -173,11 +173,15 @@ const Header = () => {
                     </li>
                     <li>
                         {loggedInUser ? (
-                        <Link href="/cart" className="z-[20]">
+                        <Link href="/cart" className="z-[20] relative">
+                            {itemCount == 0 ? (
+                            <img src="/cart.svg" className="size-6" />
+                            ) : (
                             <div className="relative">
                                 <img src="/cart.svg" className="size-6" />
                                 <div className="absolute -top-2 -right-2 p-0 size-4 flex justify-center rounded-full bg-red-500 text-xs text-white font-medium">{itemCount}</div>
                             </div>
+                            )}
                         </Link>
                         ) : (
                         <Dialog>

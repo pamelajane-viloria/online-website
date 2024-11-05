@@ -10,7 +10,7 @@ export default function Faqs() {
             <Header />
             <section className="faq-section xl:px-24 lg:px-12 px-5 pb-16 lg:mt-[1rem] mt-10">
                 <h2 className="text-3xl font-bold text-center">Frequent Asked Questions</h2>
-                <p className="text-center text-zinc-500">If you have other burning questions we weren't able to address here, feel free to contact customer support.</p>
+                <p className="text-center text-zinc-500">If you have other burning questions we weren&apos;t able to address here, feel free to contact customer support.</p>
                 <ul>
                     <li className="flex flex-col lg:flex-row lg:justify-between items-start my-8">
                         <h3 className="py-4 mt-3 text-2xl font-bold">Shopping FAQs</h3>
