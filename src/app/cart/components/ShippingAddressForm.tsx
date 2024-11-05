@@ -32,9 +32,9 @@ const CheckoutForm: FC<shippingProps> = ({ handleShippingFormSubmit }: shippingP
         address: z.string().min(1, "Address is required"),
         city: z.string().min(1, "City is required"),
         state: z.string().min(1, "State is required"),
-        postalCode: z.string().min(4, "Postal Code must be at least 4 characters"),
+        postalCode: z.string().regex(/^\d+$/, "Postal Code must contain only numbers").min(4, "Postal Code must be at least 4 characters"),
         country: z.string().min(1, "Country is required"),
-        phoneNumber: z.string().min(10, "Phone number must be at least 10 digits"),
+        phoneNumber: z.string().regex(/^\d+$/, "Phone number must contain only numbers").min(10, "Phone number must be at least 10 digits"),
 	});
 
 	type FormData = z.infer<typeof formSchema>;
@@ -84,7 +84,7 @@ const CheckoutForm: FC<shippingProps> = ({ handleShippingFormSubmit }: shippingP
 				<FormItem className="space-y-1">
 					<FormLabel className="font-semibold text-sm">Phone Number <span className="text-red-500">*</span></FormLabel>
 					<FormControl>
-						<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('phoneNumber')} placeholder="Enter your" />
+						<Input type="text" className="shadow-none focus-visible:ring-0 focus:border-yellow-200 focus:border-2 pt-px" {...register('phoneNumber')} placeholder="Enter your phone number" />
 					</FormControl>
 					{errors.phoneNumber && <span className="text-xs text-red-500">{errors.phoneNumber.message}</span>}
 				</FormItem>

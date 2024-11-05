@@ -22,30 +22,22 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
     // prevent user from typing special characters (especially -)
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        if (/^\d+$/.test(value) || value === '') {
-            setQuantityCount(Number(value));
-            setTotalAmount((Number(value)) * price);
-            onUpdateTotal(Number(value));
+        // if (/^\d+$/.test(value) || value === '') {
+        //     setQuantityCount(Number(value));
+        //     setTotalAmount((Number(value)) * price);
+        //     onUpdateTotal(Number(value));
+        // }
+        if (/^\d*$/.test(value)) {
+            const quantity = value === '' || Number(value) === 0 ? 1 : Number(value);
+            
+            setQuantityCount(quantity);
+            setTotalAmount(quantity * price);
+            onUpdateTotal(quantity);
         }
     };
     
     // Increase and decrease product quantity on button and calculate total price
     const handleUpdateQuantity = (addminus:string) => {
-        // const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-		// const existingProduct = cartItems.find((item: { productId: number }) => item.productId === id);
-        // if (addminus === 'add') {
-        //     setQuantityCount(quantityCount + 1);
-        //     existingProduct.quantity += 1;
-        //     setTotalAmount((quantityCount + 1) * price);
-        //     onUpdateTotal(quantityCount + 1);
-        // } else if (addminus === 'minus') {
-        //     setQuantityCount(Math.max(quantityCount - 1, 1)); 
-        //     existingProduct.quantity -= 1;
-        //     setTotalAmount((quantityCount - 1) * price);
-        //     onUpdateTotal(quantityCount - 1);
-        // }
-        // localStorage.setItem('cartItems', JSON.stringify(cartItems));
-
         const cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
         const existingProduct = cartItems.find((item: { productId: number }) => item.productId === id);
 
