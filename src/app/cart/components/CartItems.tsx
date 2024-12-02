@@ -1,7 +1,8 @@
 "use client"
-import React, {  useState, FC, useEffect } from 'react';
+import React, {  useState, FC } from 'react';
 import axios from 'axios';
 import { TableCell, TableRow, } from "@/components/ui/table";
+import Link from 'next/link';
 
 interface cartItemsProps {
     userId: number,
@@ -65,12 +66,14 @@ const CartItems: FC<cartItemsProps> = ({ userId, id, title, image, category, pri
 
     return (
         <TableRow key={id} className="hover:bg-transparent">
-            <TableCell className="font-medium flex items-center gap-6 py-8">
-                <img src={image} className="w-10" />
-                <div>
-                    <p className="text-wrap">{title}</p>
-                    <span className="text-zinc-400 text-regular">{category}</span>
-                </div>
+            <TableCell>
+                <Link href={`/products/${id}`} className="font-medium flex items-center gap-6 py-8">
+                    <img src={image} className="w-10" />
+                    <div>
+                        <p className="text-wrap">{title}</p>
+                        <span className="text-zinc-400 text-regular">{category}</span>
+                    </div>
+                </Link>
             </TableCell>
             <TableCell className="lg:table-cell hidden">
                 <form className="max-w-xs">

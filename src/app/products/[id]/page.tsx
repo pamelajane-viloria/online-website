@@ -24,8 +24,9 @@ export default function ProductDetails() {
     // prevent user from typing special characters (especially -)
     const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        if (/^\d+$/.test(value) || value === '') {
-            setQuantityCount(Number(value));
+        if (/^\d*$/.test(value)) {
+            const quantity = value === '' || Number(value) === 0 ? 1 : Number(value);
+            setQuantityCount(quantity);
         }
     };
 
